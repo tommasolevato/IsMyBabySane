@@ -3,7 +3,7 @@
 #include <pxcsmartptr.h>
 #include <util_pipeline.h>
 #include <pxcimage.h>
-#include "MyPipeline.h"
+#include "RGBPipeline.h"
 
 #include <iostream>
 
@@ -15,7 +15,7 @@ int main() {
 
 	PXCMetadata *mdata = session->DynamicCast<PXCMetadata>();
 
-	MyPipeline pp(session, L"testCreative", false);
+	RGBPipeline pp(session, L"testCreative", false);
 	
 	//MyPipeline pp(session, L"testCreative", false);
 
