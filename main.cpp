@@ -3,24 +3,20 @@
 #include <pxcsmartptr.h>
 #include <util_pipeline.h>
 #include <pxcimage.h>
-#include "RGBPipeline.h"
+#include "ConvertPipeline.h"
+#include "InfoPipeline.h"
 
 #include <iostream>
 
 using namespace std;
 
 int main() {
-	PXCSession* session;
-	PXCSession_Create(&session);
+	/*ConvertPipeline converter(L"C:/Users/Tommaso/Desktop/testCreative");
+	converter.convert();*/
 
-	PXCMetadata *mdata = session->DynamicCast<PXCMetadata>();
-
-	RGBPipeline pp(session, L"testCreative", false);
-	
-	//MyPipeline pp(session, L"testCreative", false);
-
-	pp.EnableImage(PXCImage::COLOR_FORMAT_DEPTH);
-	pp.LoopFrames();
-
-	pp.finalize();
+	InfoPipeline info(L"C:/Users/Tommaso/Desktop/testCreative");
+	cout << info.getTotalNumberOfFrames() << endl;
+	cout << info.getTotalNumberOfFrames() << endl;
+	cout << info.getTotalNumberOfFrames() << endl;
+	getchar();
 }
