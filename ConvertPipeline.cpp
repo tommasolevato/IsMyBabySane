@@ -18,7 +18,7 @@ void ConvertPipeline::OnImage(PXCImage* image) {
 
 	if(isValidImage(image, data))
 	{
-		cv::Mat result(info.height, info.width, CV_8UC3, data.planes[0], data.pitches[0]);
+		cv::Mat result(info.height, info.width, getSourceFormat(), data.planes[0], data.pitches[0]);
 		writer << result;
 		image->Release();
 	}
@@ -32,7 +32,9 @@ void ConvertPipeline::finalize() {
 }
 
 void ConvertPipeline::convert() {
-	EnableImage(PXCImage::COLOR_FORMAT_RGB32);
+	Size frameSize = getSize();
+	writer.open("C:/Users/Tommaso/Desktop/" + getName(), getFormatToEncodeTo(), 30, frameSize, true);
+	EnableImage(getImageType());
 	LoopFrames();
 	finalize();
 }

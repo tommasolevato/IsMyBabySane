@@ -1,22 +1,17 @@
-#include <pxcsession.h>
-#include <pxcmetadata.h>
-#include <pxcsmartptr.h>
-#include <util_pipeline.h>
-#include <pxcimage.h>
-#include "ConvertPipeline.h"
-#include "InfoPipeline.h"
-
-#include <iostream>
+#include "Converter.h"
 
 using namespace std;
 
 int main() {
-	/*ConvertPipeline converter(L"C:/Users/Tommaso/Desktop/testCreative");
-	converter.convert();*/
+	Converter c(L"C:/Users/Tommaso/Desktop/testCreative");
+	c.convert();
 
-	InfoPipeline info(L"C:/Users/Tommaso/Desktop/testCreative");
-	cout << info.getTotalNumberOfFrames() << endl;
-	cout << info.getTotalNumberOfFrames() << endl;
-	cout << info.getTotalNumberOfFrames() << endl;
+	cout << "Ho finito!" << endl;
 	getchar();
+
+	//InfoPipeline info(L"C:/Users/Tommaso/Desktop/testCreative");
+	//cout << info.getTotalNumberOfFrames() << endl;
+	//cout << info.getTotalNumberOfFrames() << endl;
+	//cout << info.getTotalNumberOfFrames() << endl;
+	//getchar();
 }

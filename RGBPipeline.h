@@ -4,23 +4,23 @@
 
 #include <util_pipeline.h>
 #include <opencv2\opencv.hpp>
+#include "ConvertPipeline.h"
 
 using namespace cv;
 using namespace std;
 
-class RGBPipeline : public UtilPipeline {
-
-private:
-	VideoWriter writer;
+class RGBPipeline : public ConvertPipeline {
 
 public: 
-	RGBPipeline(PXCSession *session, const pxcCHAR *file, bool recording) : UtilPipeline(session, file, recording) {
-		Size s(640, 480);
-		writer.open("C:/Users/Tommaso/Desktop/1.avi", CV_FOURCC('X','V','I', 'D'), 30, s, true);
-	}
-	void OnImage(PXCImage *image);
+	RGBPipeline(const pxcCHAR *file) : ConvertPipeline(file) {}
 
-	void finalize();
+	Size getSize();
+	int getFormatToEncodeTo();
+	string getName();
+	int getSourceFormat();
+	PXCImage::ColorFormat getImageType();
+
+
 };
 
 #endif
