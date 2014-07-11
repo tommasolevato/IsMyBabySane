@@ -14,13 +14,16 @@ class ConvertPipeline : public UtilPipeline {
 
 private:
 	VideoWriter writer;
-	bool isValidImage(PXCImage* image, PXCImage::ImageData data);
+	PXCImage::ImageData data;
+	bool isValidImage(PXCImage* image);
+	Mat convertToMat(PXCImage* image);
 
 public: 
 	ConvertPipeline(const pxcCHAR *file) : UtilPipeline(Session::getSession(), file, false)  {}
 	void OnImage(PXCImage *image);
 	void convert();
 	void finalize();
+	
 
 	virtual Size getSize() = 0;
 	virtual int getFormatToEncodeTo() = 0;

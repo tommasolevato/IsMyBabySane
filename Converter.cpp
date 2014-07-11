@@ -2,4 +2,5 @@
 
 void Converter::convert() {
 	RGBConverter.convert();
+	//DepthConverter.convert();
 }

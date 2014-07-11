@@ -4,14 +4,6 @@ using namespace std;
 
 int main() {
 	Converter c(L"C:/Users/Tommaso/Desktop/testCreative");
+	//Converter c(L"E:/Acquisizioni Meyer/Registrazione1_incubatrice");
 	c.convert();
-
-	cout << "Ho finito!" << endl;
-	getchar();
-
-	//InfoPipeline info(L"C:/Users/Tommaso/Desktop/testCreative");
-	//cout << info.getTotalNumberOfFrames() << endl;
-	//cout << info.getTotalNumberOfFrames() << endl;
-	//cout << info.getTotalNumberOfFrames() << endl;
-	//getchar();
 }
