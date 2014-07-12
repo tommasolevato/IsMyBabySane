@@ -9,11 +9,7 @@ int RGBPipeline::getFormatToEncodeTo() {
 }
 
 string RGBPipeline::getName() {
-<<<<<<< HEAD
 	return "_RGB.avi";
-=======
-	return "1_RGB.avi";
->>>>>>> parent of 3a91e7f... Fix: Memory Leak
 }
 
 int RGBPipeline::getSourceFormat() {
