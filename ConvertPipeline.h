@@ -17,6 +17,7 @@ class ConvertPipeline : public UtilPipeline {
 
 private:
 	VideoWriter writer;
+<<<<<<< HEAD
 	PXCImage::ImageData data;
 	const pxcCHAR* filename; //TODO: forse sarebbe il caso di aggirare questo const
 	
@@ -24,6 +25,9 @@ private:
 	Mat convertToMat(PXCImage* image);
 	std::string WChartToStdString(const wchar_t* s, char dfault = '?', const std::locale& loc = std::locale());
 
+=======
+	bool isValidImage(PXCImage* image, PXCImage::ImageData data);
+>>>>>>> parent of 3a91e7f... Fix: Memory Leak
 
 public: 
 	ConvertPipeline(const pxcCHAR *filename) : UtilPipeline(Session::getSession(), filename, false)  {
@@ -32,7 +36,10 @@ public:
 	void OnImage(PXCImage *image);
 	void convert();
 	void finalize();
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of 3a91e7f... Fix: Memory Leak
 
 	virtual Size getSize() = 0;
 	virtual int getFormatToEncodeTo() = 0;

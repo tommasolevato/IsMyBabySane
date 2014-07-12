@@ -1,7 +1,13 @@
 #ifndef RGBPIPELINE_H
 #define RGBPIPELINE_H
 
+
+#include <util_pipeline.h>
+#include <opencv2\opencv.hpp>
 #include "ConvertPipeline.h"
+
+using namespace cv;
+using namespace std;
 
 class RGBPipeline : public ConvertPipeline {
 
