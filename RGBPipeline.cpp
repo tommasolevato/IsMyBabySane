@@ -9,7 +9,7 @@ int RGBPipeline::getFormatToEncodeTo() {
 }
 
 string RGBPipeline::getName() {
-	return "2_RGB.avi";
+	return "_RGB.avi";
 }
 
 int RGBPipeline::getSourceFormat() {

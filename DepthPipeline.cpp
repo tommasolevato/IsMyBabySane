@@ -22,7 +22,7 @@ int DepthPipeline::getFormatToEncodeTo() {
 }
 
 string DepthPipeline::getName() {
-	return "2_Depth.avi";
+	return "_Depth.avi";
 }
 
 int DepthPipeline::getSourceFormat() {
