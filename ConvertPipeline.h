@@ -17,12 +17,18 @@ class ConvertPipeline : public UtilPipeline {
 
 private:
 	VideoWriter writer;
-	PXCImage::ImageData data;
 	const pxcCHAR* filename; //TODO: forse sarebbe il caso di aggirare questo const
-	
-	bool isValidImage(PXCImage* image);
+	virtual bool isValidImage(PXCImage* image);
 	Mat convertToMat(PXCImage* image);
 	std::string WChartToStdString(const wchar_t* s, char dfault = '?', const std::locale& loc = std::locale());
+	Mat invertMat(Mat toInvert);
+	
+
+
+protected:
+	PXCImage::ImageData data;
+	PXCImage::ImageInfo info;
+	virtual pxcBYTE* computeImage() = 0;
 
 
 public: 

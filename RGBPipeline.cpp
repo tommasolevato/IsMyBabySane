@@ -19,3 +19,8 @@ int RGBPipeline::getSourceFormat() {
 PXCImage::ColorFormat RGBPipeline::getImageType(){
 	return PXCImage::COLOR_FORMAT_RGB32;
 }
+
+
+pxcBYTE* RGBPipeline::computeImage() {
+	return data.planes[0];
+}
