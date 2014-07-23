@@ -13,15 +13,19 @@ int main(int argc, char* argv[]) {
 	//Converter c("C:/Users/Tommaso/Desktop/testCreative");
 
 	try{
-		//Converter c("F:/Leonardo/LeoWindows/Registrazioni Meyer/Registrazione3_incubatrice");
+		//Converter c("E:/Acquisizioni Meyer/Registrazione3_incubatrice");
+		//Converter c("C:/Users/Tommaso/Desktop/testCreative");
 		//c.convert();
 
 		//Questo costruttore prende inizio e fine frame per analizzare uno spezzone di video
-		AnalyzePipeline c(L"F:/Leonardo/LeoWindows/Registrazioni Meyer/Registrazione3_incubatrice");
+		//AnalyzePipeline c(L"C:/Users/Tommaso/Desktop/testCreative_RGB.avi");
+		AnalyzePipeline c(L"E:/Acquisizioni Meyer/Registrazione3_incubatrice_IR.avi");
 		c.analyze();
+
+		//getchar();
 	}
-	catch( cv::Exception& e ){
-		const char* err_msg = e.what();
+	catch( std::exception& e ){
+		string err_msg = e.what();
 		std::cout << "exception caught: " << err_msg << std::endl;
 		getchar();
 	}

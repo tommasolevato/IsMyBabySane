@@ -3,7 +3,7 @@
 #include <iostream>
 #include <opencv2\core\core.hpp>
 #include <opencv2\opencv.hpp>
-
+#include "Util.h"
 #include <util_render.h>
 
 
@@ -11,9 +11,16 @@ using namespace std;
 using namespace cv;
 
 
-void ConvertPipeline::OnImage(PXCImage* image) {
+ConvertPipeline::~ConvertPipeline() {
+	delete filename;
+	//TODO: heap danneggiato (probabilmente deriva da RGBPipeline)
+	//delete frame;
+}
 
+
+void ConvertPipeline::OnImage(PXCImage* image) {
 	if(isValidImage(image)){
+		Mat temp = convertToMat(image);
 		writer.write(convertToMat(image));
 		image->ReleaseAccess(&data);
 	}
@@ -25,7 +32,7 @@ void ConvertPipeline::finalize() {
 
 void ConvertPipeline::convert() {
 	Size frameSize = getSize();
-	writer.open(WChartToStdString(filename) + getName(), getFormatToEncodeTo(), 30, frameSize, true);
+	writer.open(Util::WChartToStdString(filename) + getName(), getFormatToEncodeTo(), 30, frameSize, true);
 	EnableImage(getImageType());
 	LoopFrames();
 	finalize();
@@ -37,16 +44,11 @@ bool ConvertPipeline::isValidImage(PXCImage* image) {
 
 Mat ConvertPipeline::convertToMat(PXCImage* image) {
 	image->QueryInfo(&info);
-	
-	return Mat(info.height, info.width, getSourceFormat(), computeImage());
+	computeImage();
+	return Mat(info.height, info.width, getSourceFormat(), frame);
 }
 
 //TODO: cambiare nome
-std::string ConvertPipeline::WChartToStdString( const wchar_t *s, char dfault, const std::locale& loc) {
-	std::ostringstream stm;
 
-	while( *s != L'\0' ) {
-		stm << std::use_facet< std::ctype<wchar_t> >( loc ).narrow( *s++, dfault );
-	}
-	return stm.str();
-}
+
+

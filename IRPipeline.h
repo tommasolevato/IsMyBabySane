@@ -1,12 +1,12 @@
-#ifndef RGBPIPELINE_H
-#define RGBPIPELINE_H
+#ifndef IRPIPELINE_H
+#define IRPIPELINE_H
 
 #include "ConvertPipeline.h"
 
-class RGBPipeline : public ConvertPipeline {
+class IRPipeline : public ConvertPipeline {
 
 public: 
-	RGBPipeline(const pxcCHAR *file) : ConvertPipeline(file) {}
+	IRPipeline(const pxcCHAR *file) : ConvertPipeline(file) {}
 
 	Size getSize();
 	int getFormatToEncodeTo();

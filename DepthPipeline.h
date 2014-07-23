@@ -15,7 +15,7 @@ public:
 	PXCImage::ColorFormat getImageType();
 
 private:
-	pxcBYTE* computeImage();
+	void computeImage();
 
 };
 

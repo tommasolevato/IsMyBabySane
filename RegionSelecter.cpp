@@ -106,18 +106,18 @@ void RegionSelecter::setMaskFromMouse(Mat frame){
 
 void RegionSelecter::setDepthMask(){
 
-	Point* depthPoints[1];
-	depthPoints[0]=new Point[vect.size()];
-	std::copy(vect.begin(),vect.end(),depthPoints[0]);
-	for (int i=0;i<vect.size();i++){
-		depthPoints[0][i].x=std::floor(depthPoints[0][i].x/2);
-		depthPoints[0][i].y=std::floor(depthPoints[0][i].y/2);
-	}
-	const Point* pts[1]={const_cast<Point*>(depthPoints[0])};
+	//Point* depthPoints[1];
+	//depthPoints[0]=new Point[vect.size()];
+	//std::copy(vect.begin(),vect.end(),depthPoints[0]);
+	//for (int i=0;i<vect.size();i++){
+	//	depthPoints[0][i].x=std::floor(depthPoints[0][i].x/2);
+	//	depthPoints[0][i].y=std::floor(depthPoints[0][i].y/2);
+	//}
+	//const Point* pts[1]={const_cast<Point*>(depthPoints[0])};
 
-	Mat result=Mat::ones(originalFrame.rows/2,originalFrame.cols/2,CV_8U)*255; 
-	fillPoly( result, pts, npoints, 1, 0,8);
-	depthMask=result;
+	//Mat result=Mat::ones(originalFrame.rows/2,originalFrame.cols/2,CV_8U)*255; 
+	//fillPoly( result, pts, npoints, 1, 0,8);
+	depthMask=getMask();
 }
 
 void RegionSelecter::printInstruction(){

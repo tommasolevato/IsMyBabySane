@@ -21,6 +21,6 @@ PXCImage::ColorFormat RGBPipeline::getImageType(){
 }
 
 
-pxcBYTE* RGBPipeline::computeImage() {
-	return data.planes[0];
+void RGBPipeline::computeImage() {
+	frame =  data.planes[0];
 }

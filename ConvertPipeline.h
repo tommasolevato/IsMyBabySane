@@ -18,27 +18,30 @@ class ConvertPipeline : public UtilPipeline {
 private:
 	VideoWriter writer;
 	const pxcCHAR* filename; //TODO: forse sarebbe il caso di aggirare questo const
+
 	virtual bool isValidImage(PXCImage* image);
 	Mat convertToMat(PXCImage* image);
-	std::string WChartToStdString(const wchar_t* s, char dfault = '?', const std::locale& loc = std::locale());
-	Mat invertMat(Mat toInvert);
-	
+	//std::string WChartToStdString(const wchar_t* s, char dfault = '?', const std::locale& loc = std::locale());
 
 
 protected:
 	PXCImage::ImageData data;
 	PXCImage::ImageInfo info;
-	virtual pxcBYTE* computeImage() = 0;
+	pxcBYTE* frame;
+	virtual void computeImage() = 0;
 
 
 public: 
 	ConvertPipeline(const pxcCHAR *filename) : UtilPipeline(Session::getSession(), filename, false)  {
 		this->filename = filename;
+		frame = (pxcBYTE*) malloc(sizeof(pxcBYTE));
 	}
+
+	virtual ~ConvertPipeline();
+
 	void OnImage(PXCImage *image);
 	void convert();
 	void finalize();
-
 
 	virtual Size getSize() = 0;
 	virtual int getFormatToEncodeTo() = 0;

@@ -6,7 +6,9 @@ static int ThreeDMapping(int width, int w, int height, int h, int C, int c_i);
 static bool CompareFunc(const Rank &r1, const Rank &r2);
 
 BackgroundGMM::BackgroundGMM(const Mat &first_frame,  bool repeat, int n):
-	C(2),M(2),D(2.5f),alpha(0.0001f),thresh(0.4f),sd_init(6),width(first_frame.cols),height(first_frame.rows)
+	//0.1 buono per RGB
+	C(3), M(2),D(2.5f),alpha(0.1f),thresh(0.4f),sd_init(6),width(first_frame.cols),height(first_frame.rows)
+	//XXX: attenzione alla conversione o quando gli do la depth
 {
 	first_frame.copyTo(fr);
 	if(first_frame.type()==CV_8UC3){
@@ -22,7 +24,7 @@ BackgroundGMM::BackgroundGMM(const Mat &first_frame,  bool repeat, int n):
 	u_diff = new float[width*height*C];
 	p = alpha/(1/(float)C);
 	//set random mean value
-	for(int i = 0; i<width*height*C; ++i)
+	for(int i = 0; i < width*height*C; ++i)
 	{
 		mean[i] = (float)(rand()%256);
 	}
@@ -212,18 +214,22 @@ bool BackgroundGMM::DetermineForeground(int i, int j)
 void BackgroundGMM::StoreImg(int frameNO,std::string type)
 {
 	//foreground image
-	
+
 	string path;
 	if(type=="rgb"){
-		path="res/rgb/";
+		//TODO: hardcoded
+		path="C:/Users/Tommaso/Desktop/res/rgb/";
 	}
 	else {
 		if(type=="depth"){
-			path="res/depth/";
+			//TODO: hardcoded
+			path="C:/Users/Tommaso/Desktop/res/depth/";
 		}
 	}
+	//cout << "sono dentro!! " + path << endl;
 	string nameF=path+string("foreground/fg_")+to_string(frameNO)+string(".jpg");
 	const char * charNameF = nameF.c_str();
+	//cout << charNameF << endl;
 	imwrite(charNameF,this->fg);
 	//background image
 	Mat background;
@@ -231,7 +237,7 @@ void BackgroundGMM::StoreImg(int frameNO,std::string type)
 	this->bg_bw.convertTo(background,cv::DataType<uchar>::type);
 	string nameB=path+string("background/bg_")+to_string(frameNO)+string(".jpg");
 	const char * charNameB = nameB.c_str();
-	imwrite(charNameB,background);
+	imwrite(nameB,background);
 }
 
 static int ThreeDMapping(int width, int w, int height, int h, int C, int c_i)

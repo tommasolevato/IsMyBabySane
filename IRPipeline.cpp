@@ -1,10 +1,10 @@
-#include "DepthPipeline.h"
+#include "IRPipeline.h"
 
-Size DepthPipeline::getSize() {
+Size IRPipeline::getSize() {
 	return Size(320, 240);
 }
 
-int DepthPipeline::getFormatToEncodeTo() {
+int IRPipeline::getFormatToEncodeTo() {
 	//return CV_FOURCC('P','I','M','1');
 	return CV_FOURCC('X','V','I', 'D');
 	//return CV_FOURCC('Y', 'U', 'Y', 'V');
@@ -21,38 +21,33 @@ int DepthPipeline::getFormatToEncodeTo() {
 	//return -1;
 }
 
-string DepthPipeline::getName() {
-	return "_Depth.avi";
+string IRPipeline::getName() {
+	return "_IR.avi";
 }
 
-int DepthPipeline::getSourceFormat() {
+int IRPipeline::getSourceFormat() {
 	return CV_8UC3;
 }
 
-PXCImage::ColorFormat DepthPipeline::getImageType(){
+PXCImage::ColorFormat IRPipeline::getImageType(){
 	return PXCImage::COLOR_FORMAT_DEPTH;
 }
 
 
-void DepthPipeline::computeImage() {
-	/*cout << 3 * info.width * info.height << endl << endl;
-	getchar();*/
-
+void IRPipeline::computeImage() {
 	delete frame;
-	unsigned __int16* src = (unsigned __int16*)data.planes[0];
+	unsigned __int16* src = (unsigned __int16*)data.planes[1];
 	//XXX: brutta l'apparente discrepanza tra pxcBYTE e unsigned __int8
 	frame = (pxcBYTE*) malloc (3*info.width*info.height*sizeof(unsigned __int8));
 
 	for(int j=0; j < info.width*info.height; j++) {
 		float val = (float)src[j] / 65535;
-		val = 1.f - ( ((val)/(0.016)));
+		val = ( ((val)/(0.016)));
 		val = max(val, 0.f);
 		val = min(val, 1.f);
 
-		/*cout << 3*j << endl;
-		cout << (3*j)+1 << endl;
-		cout << (3*j)+2 << endl;
-*/
+		//cout << val << endl;
+
 		frame[3*j] = (unsigned __int8)(val*255);
 		frame[(3*j) + 1] = (unsigned __int8)(val*255);
 		frame[(3*j) + 2] = (unsigned __int8)(val*255);
