@@ -45,7 +45,10 @@ bool ConvertPipeline::isValidImage(PXCImage* image) {
 Mat ConvertPipeline::convertToMat(PXCImage* image) {
 	image->QueryInfo(&info);
 	computeImage();
-	return Mat(info.height, info.width, getSourceFormat(), frame);
+	//FIXME
+	//return Mat(info.height, info.width, getSourceFormat(), frame);
+
+	return Mat(getSize().height, getSize().width, getSourceFormat(), frame);
 }
 
 //TODO: cambiare nome

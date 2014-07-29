@@ -17,12 +17,12 @@ bool AnalyzePipeline::checkFrameRange(){
 
 
 bool AnalyzePipeline::OnNewFrame() {
-	frameIstance++;
+	//frameIstance++;
 	cout<<"\r"<<"               \r"<<frameIstance<<"    ";
 
 
-	
-	/*PXCImage *color_image=QueryImage(PXCImage::IMAGE_TYPE_COLOR);
+
+	PXCImage *color_image=QueryImage(PXCImage::IMAGE_TYPE_COLOR);
 	PXCImage *depth_image=QueryImage(PXCImage::IMAGE_TYPE_DEPTH);
 
 	PXCImage::ImageData depthData;
@@ -31,16 +31,16 @@ bool AnalyzePipeline::OnNewFrame() {
 	PXCImage::ImageInfo RGBInfo;
 
 
-	color_image->QueryInfo(&RGBInfo);
-	if(color_image->AcquireAccess(PXCImage::ACCESS_READ, &RGBData)>=PXC_STATUS_NO_ERROR){
-		cv::Mat RGBResult(RGBInfo.height, RGBInfo.width, CV_8UC3, RGBData.planes[0]);*/
+	//color_image->QueryInfo(&RGBInfo);
+	//if(color_image->AcquireAccess(PXCImage::ACCESS_READ, &RGBData)>=PXC_STATUS_NO_ERROR){
+	//cv::Mat RGBResult(RGBInfo.height, RGBInfo.width, CV_8UC3, RGBData.planes[0]);*/
 	//bcg.findBackground(RGBResult);
 	////	//FIXME: ci vorrà un filtraggio?? forse no, forse è dannoso
 
 	//cout<<frameIstance<<endl;
-		//if(frameIstance==firstFrame_){
-			//rs.setMaskFromMouse(RGBResult);
-			//rs.setMaskFromFile(); //per evitare di risettarli ad ogni run
+	//if(frameIstance==firstFrame_){
+	//rs.setMaskFromMouse(RGBResult);
+	//rs.setMaskFromFile(); //per evitare di risettarli ad ogni run
 	//}
 	//	subtract(RGBResult,RGBResult,RGBResult,rs.getMask());
 
@@ -55,52 +55,53 @@ bool AnalyzePipeline::OnNewFrame() {
 	//RGBResult.release();
 	//}
 
-	//depth_image->QueryInfo(&depthInfo);
+	depth_image->QueryInfo(&depthInfo);
 
-	//if(depth_image->AcquireAccess(PXCImage::ACCESS_READ, &depthData)>=PXC_STATUS_NO_ERROR){
-	//	pxcBYTE* temp = computeDepthImage(depthData,depthInfo);
-	//	cv::Mat depthResult(480, 640, CV_8UC3, temp);
-	//	////	//FIXME: ci vorrà un filtraggio?? forse no, forse è dannoso
-	//		subtract(depthResult,depthResult,depthResult,rs.getDepthMask());
-	//	bcg.findBackground(depthResult);
+	if(depth_image->AcquireAccess(PXCImage::ACCESS_READ, &depthData)>=PXC_STATUS_NO_ERROR){
+		pxcBYTE* temp = computeDepthImage(depthData,depthInfo);
+		cv::Mat depthResult(480, 640, CV_8UC3, temp);
+		//	////	//FIXME: ci vorrà un filtraggio?? forse no, forse è dannoso
+		//		subtract(depthResult,depthResult,depthResult,rs.getDepthMask());
+		bcg.findBackground(depthResult);
 
-	//	//	if(frameIstance==firstFrame_){
-	//	//		depthbggmm=new BackgroundGMM(depthResult);
-	//	//	}
-	//	//	if(checkFrameRange()){
-	//	//		depthbggmm->Processing(depthResult);
-	//	//		depthbggmm->StoreImg(frameIstance,"depth");
-	//	//	}
-	//	depthResult.release();
-	//	delete temp;
-	//	//}
+
+		//	//	if(frameIstance==firstFrame_){
+		//	//		depthbggmm=new BackgroundGMM(depthResult);
+		//	//	}
+		//	//	if(checkFrameRange()){
+		//	//		depthbggmm->Processing(depthResult);
+		//	//		depthbggmm->StoreImg(frameIstance,"depth");
+		//	//	}
+		depthResult.release();
+		delete temp;
+	}
 	//	//color_image->ReleaseAccess(&RGBData);
-	//	depth_image->ReleaseAccess(&depthData);
+	depth_image->ReleaseAccess(&depthData);
 
 
 
 
-		//TODO: da completare
-		//if(checkFrameRange()){
-		//combinedSpaceAnalysis(RGBbggmm->getForeground(),naiveConvertDepthToGray(depthbggmm->getForeground()));
+	//TODO: da completare
+	//if(checkFrameRange()){
+	//combinedSpaceAnalysis(RGBbggmm->getForeground(),naiveConvertDepthToGray(depthbggmm->getForeground()));
 	//}
 
 	return true;
 }
 
 void AnalyzePipeline::analyze() {
-	/*Size RGBSize = RGBFrame.getSize();
-	Size depthSize = depthFrame.getSize();
-	EnableImage(RGBFrame.getImageType());
-	EnableImage(depthFrame.getImageType());
-	this->LoopFrames();*/
+	//Size RGBSize = RGBFrame.getSize();
+	//Size depthSize = depthFrame.getSize();
+	//EnableImage(RGBFrame.getImageType());
+	//EnableImage(depthFrame.getImageType());
+	//this->LoopFrames();
 	int frameNumber = 1;
 	for(;;) {
 		Mat frame;
 		if(!player.read(frame)){
 			break;
 		}
-		
+
 		cout << "frame: " << frameNumber << endl;
 		frameNumber++;
 		bcg.findBackground(frame);
@@ -171,35 +172,7 @@ Mat completeConvertDepthToRGB(Mat depthImage, PXCImage::ImageData pxcDepthImageD
 	return depthImage;//Chiaramente errato
 }
 
-pxcBYTE* computeDepthImage(	PXCImage::ImageData depthData,PXCImage::ImageInfo depthInfo) {
-	//unsigned __int16* src = (unsigned __int16*)depthData.planes[1];
-	//pxcBYTE* result = (pxcBYTE*) malloc (3*depthInfo.width*depthInfo.height*sizeof(pxcBYTE));
-
-	//float DEFAULT_SCALE = 30.0f;
-	//float MAX_Z = 0.5f/13.0f;
-	//float max_distance = MAX_Z;
-	//float m_scale = 0.09f*320;
-	//float range_min = .0f;
-	//float range_max = max_distance * m_scale / DEFAULT_SCALE;
-
-	//for(int j=0; j < depthInfo.width*depthInfo.height; j++) {
-	//	float val = (float)src[j] / 65535;
-	//	//val = 1.f - ((val-range_min)/(range_max-range_min));
-	//	val = 1.f - ( ((val-range_min)/(0.016)));
-
-	//	val = max(val, 0.f);
-	//	val = min(val, 1.f);
-	//	//unsigned __int8* rgb = (unsigned __int8*) (&dst[3*j]);
-
-	//	result[3*j] = (unsigned __int8)(255*val);
-	//	result[(3*j)+1] = (unsigned __int8)(255*val);
-	//	result[(3*j)+2] = (unsigned __int8)(255*val);
-	//}
-	//return result;
-
-
-
-
+pxcBYTE* AnalyzePipeline::computeDepthImage(	PXCImage::ImageData depthData,PXCImage::ImageInfo depthInfo) {
 	unsigned __int16* src = (unsigned __int16*)depthData.planes[1];
 	pxcBYTE * frame = (pxcBYTE*) malloc (3*640*480*sizeof(unsigned __int8));
 	//
@@ -242,17 +215,56 @@ pxcBYTE* computeDepthImage(	PXCImage::ImageData depthData,PXCImage::ImageInfo de
 			//unsigned __int8* rgb = (unsigned __int8*) (&dst[3*j]);
 
 
-			int index = (int)(3* (( (int)newY*640) + ((int)newX) ));
+			int index = (int)( (( (int)newY*640) + ((int)newX) ));
 
 			//cout << index << endl;
 
-			frame[index] = (unsigned __int8)(255*val);
-			frame[index+1] = (unsigned __int8)(255*val);
-			frame[index+2] = (unsigned __int8)(255*val);
+			frame[(3*index)] = (unsigned __int8)(255*val);
+			frame[(3*index)+1] = (unsigned __int8)(255*val);
+			frame[(3*index)+2] = (unsigned __int8)(255*val);
 
 		}
 
+
+
 	}
+
+	for(int j=0; j < 640*480; j++) {
+
+		//	//FIXME: se per caso devo fare la media pesata allora devo fare un vero buffer, e non un semplice array di array
+
+		buffer[j][frameIstance%3] = frame[j];
+		buffer[j+1][frameIstance%3] = frame[j+1];
+		buffer[j+2][frameIstance%3] = frame[j+2];
+	}
+
+	for(int j=0; j < 640*480; j++) {
+
+		if(frameIstance > 1){
+			//	//FIXME: se per caso devo fare la media pesata allora devo fare un vero buffer, e non un semplice array di array
+
+			frame[j] = (int) (((float)buffer[j][0] + buffer[j][1] + buffer[j][2]) / 3);
+
+			//cout << endl << endl << endl << (float)buffer[j][0] << " " << (float)buffer[j][1] << " " << (float)buffer[j][2] << endl;
+			//cout << (int)(((float)buffer[j][0] + buffer[j][1] + buffer[j][2]) / 3);
+
+			frame[j+1] = (int) (((float)buffer[j+1][0] + buffer[j+1][1] + buffer[j+1][2]) / 3);
+
+			//cout << endl << endl << endl << (float)buffer[j+1][0] << " " << (float)buffer[j+1][1] << " " << (float)buffer[j+1][2] << endl;
+			//cout << (int)(((float)buffer[j+1][0] + buffer[j+1][1] + buffer[j+1][2]) / 3);
+
+			frame[j+2] = (int) (((float)buffer[j+2][0] + buffer[j+2][1] + buffer[j+2][2]) / 3);
+
+			//cout << endl << endl << endl << (float)buffer[j+2][0] << " " << (float)buffer[j+2][1] << " " << (float)buffer[j+2][2] << endl;
+			//cout << (int)(((float)buffer[j+2][0] + buffer[j+2][1] + buffer[j+2][2]) / 3);
+			//cout << "test " << (int)frame[j+1] << endl;
+			//getchar();
+		} 
+	}
+
+	frameIstance++;
+	//cout << "finito" << endl;
+
 
 	return frame;
 

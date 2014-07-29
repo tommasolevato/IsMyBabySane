@@ -5,6 +5,8 @@
 
 class IRPipeline : public ConvertPipeline {
 
+
+	//TODO: aggiornare in riferimento al refactor su DepthPipeline
 public: 
 	IRPipeline(const pxcCHAR *file) : ConvertPipeline(file) {}
 

@@ -1,24 +1,11 @@
 #include "DepthPipeline.h"
 
 Size DepthPipeline::getSize() {
-	return Size(320, 240);
+	return Size(640, 480);
 }
 
 int DepthPipeline::getFormatToEncodeTo() {
-	//return CV_FOURCC('P','I','M','1');
-	return CV_FOURCC('X','V','I', 'D');
-	//return CV_FOURCC('Y', 'U', 'Y', 'V');
-	//return CV_FOURCC('C', 'X', 'Y', '1');
-	//return CV_FOURCC('C', 'X', 'Y', '2');
-	//return CV_FOURCC('D', 'A', 'V', 'C');
-	//return CV_FOURCC('D', 'I', 'V', 'X');
-	//return CV_FOURCC('D', 'I', 'V', '3');
-	//return CV_FOURCC('M', 'P', '4', '2');
-	//return CV_FOURCC('I', '2', '6', '3');
-	//return CV_FOURCC('M', 'P', 'E', 'G');
-	//return CV_FOURCC('Y', '2', '1', '6');
-	//return CV_FOURCC('P', '2', '1', '6');
-	//return -1;
+	return CV_FOURCC('L', 'A', 'G', 'S');
 }
 
 string DepthPipeline::getName() {
@@ -26,7 +13,7 @@ string DepthPipeline::getName() {
 }
 
 int DepthPipeline::getSourceFormat() {
-	return CV_8UC3;
+	return CV_16UC3;
 }
 
 PXCImage::ColorFormat DepthPipeline::getImageType(){
@@ -35,69 +22,67 @@ PXCImage::ColorFormat DepthPipeline::getImageType(){
 
 
 void DepthPipeline::computeImage() {
-	/*cout << 3 * info.width * info.height << endl << endl;
-	getchar();*/
-
-	delete frame;
-	unsigned __int16* src = (unsigned __int16*)data.planes[0];
-	//XXX: brutta l'apparente discrepanza tra pxcBYTE e unsigned __int8
-	frame = (pxcBYTE*) malloc (3*info.width*info.height*sizeof(unsigned __int8));
-
-	for(int j=0; j < info.width*info.height; j++) {
-		float val = (float)src[j] / 65535;
-		val = 1.f - ( ((val)/(0.016)));
-		val = max(val, 0.f);
-		val = min(val, 1.f);
-
-		/*cout << 3*j << endl;
-		cout << (3*j)+1 << endl;
-		cout << (3*j)+2 << endl;
-*/
-		frame[3*j] = (unsigned __int8)(val*255);
-		frame[(3*j) + 1] = (unsigned __int8)(val*255);
-		frame[(3*j) + 2] = (unsigned __int8)(val*255);
-	}
-	//getchar();
+	unsigned __int16* temp = initializeFrame();
+	upscaleFrame(temp);
+	delete temp;
 }
 
 
+unsigned __int16* DepthPipeline::initializeFrame() {
+	delete frame;
+	//TODO: trovare nomi migliori per i prossimi 2
+	unsigned __int16* src  = (unsigned __int16*) data.planes[0]; 
+	unsigned __int16* temp = (unsigned __int16*) malloc(3*info.width*info.height*sizeof(unsigned __int16));
+
+	for(unsigned int j=0; j < info.width*info.height; j++) {
+		float correctedPixelValue = correctPixelValue((float)src[j]);
+
+		temp[3*j]	  = (unsigned __int16) (correctedPixelValue*maxPixelValue);
+		temp[(3*j)+1] = (unsigned __int16) (correctedPixelValue*maxPixelValue);
+		temp[(3*j)+2] = (unsigned __int16) (correctedPixelValue*maxPixelValue);
+	}
+
+	return temp;
+}
+
+void DepthPipeline::upscaleFrame(unsigned __int16* frameToUpscale) {
+	float *uvmap=(float*)data.planes[2];
+
+	frame = (pxcBYTE*) malloc (3*getSize().area()*sizeof(unsigned __int16));
+
+	for(unsigned int j=0; j < info.width*info.height; j++) {
+		int index = computeUpscaledIndex(j);
+		if(index >= 0) {
+			unsigned __int16* upscaledFrame = (unsigned __int16*)frame;
+
+			upscaledFrame[index]   = frameToUpscale[3*j];
+			upscaledFrame[index+1] = frameToUpscale[(3*j)+1];
+			upscaledFrame[index+2] = frameToUpscale[(3*j)+2];
+		}
+	}
+}
+
+int DepthPipeline::computeUpscaledIndex(int originalPixelIndex) {
+	float *uvmap=(float*)data.planes[2];
+	int x = originalPixelIndex % info.width;
+	int y = (int)(originalPixelIndex / info.width);
+	int index=((int)y)*info.width + x;
+	if(uvmap[index*2] > 0 && uvmap[index*2+1] > 0) {
+		float newX = uvmap[(index*2)] * getSize().width;
+		float newY = uvmap[(index*2)+1] * getSize().height;
+		int index = (int)(3* (( (int)newY * getSize().width) + ((int)newX) ));
+		return index;
+	}
+	return -1;
+}
 
 
-//float DEFAULT_SCALE = 30.0f;
-//float MAX_Z = 0.5f/13.0f;
-//float max_distance = MAX_Z;
-//float m_scale = 0.09f*320;
-//float range_min = .0f;
-//float range_max = max_distance * m_scale / DEFAULT_SCALE;
+float DepthPipeline::correctPixelValue(float pixelValue) {
+	float normalizedValue = pixelValue / maxPixelValue;
+	float invertedAndCorrectedValue = 1.f - (normalizedValue / (float)correctionFactor);
+	invertedAndCorrectedValue = max(invertedAndCorrectedValue, 0.f);
+	invertedAndCorrectedValue = min(invertedAndCorrectedValue, 1.f);
 
-
-//for(int j=0; j < 640*480; j++) {
-//	frame[3*j] = 0;
-//	frame[(3*j)+1] = 0;
-//	frame[(3*j)+2] = 0;
-//}
-
-
-//for(int j=0; j < 320*240; j++) {
-//	float val = (float)src[j] / 65535;
-//	val = 1.f - ( ((val)/(0.015)));
-//	val = max(val, 0.f);
-//	val = min(val, 1.f);
-
-
-
-//	float *uvmap=(float*)data.planes[2];
-//		
-//	int x = j%320;
-//	int y = floor(j/320);
-//	int index=((int)y)*320+x;
-//	if(uvmap[index*2] > 0 && uvmap[index*2+1] > 0) {
-//		float newX = uvmap[(index*2)]*640;
-//		float newY = uvmap[(index*2)+1]*480;
-//		int index = (int)(3* (( (int)newY*640) + ((int)newX) ));
-
-//		frame[index] = (unsigned __int8)(255*val);
-//		frame[index+1] = (unsigned __int8)(255*val);
-//		frame[index+2] = (unsigned __int8)(255*val);
-//	}
-//}
+	//TODO: trovare un nome più appropriato
+	return invertedAndCorrectedValue;
+}

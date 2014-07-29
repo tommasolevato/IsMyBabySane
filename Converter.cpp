@@ -3,7 +3,7 @@
 void Converter::convert() {
 	RGBConverter.convert();
 	DepthConverter.convert();
-	IRConverter.convert();
+	//IRConverter.convert();
 }
 
 wchar_t* Converter::charPtrToWCharPtr(const char* toConvert) {

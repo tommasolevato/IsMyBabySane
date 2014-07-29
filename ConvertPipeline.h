@@ -27,6 +27,7 @@ private:
 protected:
 	PXCImage::ImageData data;
 	PXCImage::ImageInfo info;
+	//FIXME
 	pxcBYTE* frame;
 	virtual void computeImage() = 0;
 

@@ -29,8 +29,13 @@ private:
 	int frameIstance;
 	int firstFrame_;
 	int lastFrame_;
+
+
 	bool checkFrameRange();
 	void combinedSpaceAnalysis(Mat rgb,Mat depth);
+
+	//FIXME: hardcoded
+	pxcBYTE** buffer;
 
 	//FIXME: chiedere a tommi se vanno bene questi attributi (e cambiare nome)
 	//TemporalAverageBGModel TABGM;
@@ -38,12 +43,24 @@ private:
 	BackgroundGMM * RGBbggmm;
 	BackgroundGMM * depthbggmm;
 
+
+	pxcBYTE* computeDepthImage(	PXCImage::ImageData depthData,PXCImage::ImageInfo depthInfo);
+
 	//bool isValidImage(PXCImage* image, PXCImage::ImageData data);
 
 public: 
 	AnalyzePipeline(const pxcCHAR *file,int firstFrame=1,int lastFrame=std::numeric_limits<int>::max()) :
 		UtilPipeline(Session::getSession(), file, false),firstFrame_(firstFrame),lastFrame_(lastFrame){
 			frameIstance=0;
+
+			buffer = new pxcBYTE*[3*640*480];
+			for(int i = 0; i<3*640*480; i++) {
+				buffer[i] = new pxcBYTE[3];
+			}
+			//TODO: fare una query sul primo frame di depth per costruire il buffer di smoothing
+
+
+
 			//system("rm -r C:/Users/Tommaso/Desktop/res/rgb/background/*");
 			//system("rm -r C:/Users/Tommaso/Desktop/res/rgb/foreground/*");
 			//system("rm -r C:/Users/Tommaso/Desktop/res/depth/background/*");
