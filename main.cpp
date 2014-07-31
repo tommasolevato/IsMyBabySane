@@ -19,8 +19,8 @@ int main(int argc, char* argv[]) {
 
 		//Questo costruttore prende inizio e fine frame per analizzare uno spezzone di video
 		//AnalyzePipeline c(L"C:/Users/Tommaso/Desktop/testCreative_RGB.avi");
-		//AnalyzePipeline c(L"E:/Acquisizioni Meyer/Registrazione3_incubatrice_RGB.avi");
-		AnalyzePipeline c(L"C:/Users/Tommaso/Desktop/Filmato.mp4");
+		AnalyzePipeline c(L"E:/Acquisizioni Meyer/Registrazione3_incubatrice_RGB.avi");
+		//AnalyzePipeline c(L"C:/Users/Tommaso/Desktop/Filmato.mp4");
 		c.analyze();
 
 		//getchar();

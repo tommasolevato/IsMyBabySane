@@ -97,15 +97,52 @@ void AnalyzePipeline::analyze() {
 	//this->LoopFrames();
 	int frameNumber = 1;
 	for(;;) {
-		Mat frame;
-		if(!player.read(frame)){
+		Mat rgbframe;
+		Mat depthframe;
+		if(!rgbplayer.read(rgbframe) || !depthplayer.read(depthframe)){
 			break;
 		}
 
+		unsigned __int8* rgbData = (unsigned __int8*) rgbframe.data;
+		unsigned __int16* depthData = (unsigned __int16*) depthframe.data;
+
+		unsigned __int16* resultData = (unsigned __int16*) malloc (640*480*4*sizeof(unsigned __int16));
+
+		for(int i=0; i < 640*480; i++) {
+			//cout << (unsigned __int16)rgb[i] << endl;
+			resultData[(4*i)]   = (unsigned __int16)rgbData[3*i];
+			resultData[(4*i)+1] = (unsigned __int16)rgbData[(3*i)+1];
+			resultData[(4*i)+2] = (unsigned __int16)rgbData[(3*i)+2];
+
+			//TODO: verificare se funziona anche a 16 bit
+			resultData[(4*i)+3] = (unsigned __int16) depthData[i];
+			//resultData[(4*i)+3] = (unsigned __int16) depthData[i];
+		}
+
+		//unsigned __int8* resultData = (unsigned __int8*) malloc (640*480*3*sizeof(unsigned __int8));
+
+		//for(int i=0; i < 640*480; i++) {
+		//	//	//cout << (unsigned __int16)rgb[i] << endl;
+		//	resultData[(3*i)]   = rgbData[3*i];
+		//	resultData[(3*i)+1] = rgbData[(3*i)+1];
+		//	resultData[(3*i)+2] = rgbData[(3*i)+2];
+
+		//	//	//TODO: verificare se funziona anche a 16 bit
+		//	//	resultData[(4*i)+3] = (unsigned __int8) depthData[i];
+		//	//	//resultData[(4*i)+3] = (unsigned __int16) depthData[i];
+		//}
+		//getchar();
+
+		Mat result(480, 640, CV_16UC4, resultData);
+		//Mat result(480, 640, CV_8UC3, resultData);
+		//imshow("", result);
+		//waitKey(30);
+
 		cout << "frame: " << frameNumber << endl;
 		frameNumber++;
-		bcg.findBackground(frame);
-		waitKey(30);
+		bcg.setOriginal(rgbframe);
+		bcg.findBackground(result);
+		//waitKey(30);
 
 	}
 

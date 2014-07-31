@@ -24,7 +24,8 @@ private:
 	RGBImage RGBFrame;
 	DepthImage depthFrame;
 	BackgroundCV bcg;
-	VideoCapture player;
+	VideoCapture rgbplayer;
+	VideoCapture depthplayer;
 
 	int frameIstance;
 	int firstFrame_;
@@ -67,7 +68,9 @@ public:
 			//system("rm -r C:/Users/Tommaso/Desktop/res/depth/foreground/*");
 
 
-			player = VideoCapture(Util::WChartToStdString(file));
+			rgbplayer = VideoCapture(Util::WChartToStdString(file));
+			//FIXME: hardcoded
+			depthplayer = VideoCapture("E:/Acquisizioni Meyer/Registrazione3_incubatrice_Depth.avi");
 
 	}
 	Mat convertDepthToRGBUsingUVMap(Mat depthImage, PXCImage::ImageData* dData,PXCImage::ImageInfo& dInfo, PXCImage::ImageInfo& cInfo);

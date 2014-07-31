@@ -10,11 +10,16 @@ class BackgroundCV {
 public:
 	BackgroundCV();
 	Mat findBackground(Mat image);
-
+	//TODO: eliminare
+	void setOriginal(Mat or);
 
 private:
 	//Mat seed;
-	BackgroundSubtractorMOG sb;
+
+	//FIXME: ce ne vorrà solo uno in futuro
+	BackgroundSubtractorMOG2 sb1;
+	BackgroundSubtractorMOG2 sb2;
+	Mat original;
 
 };
 
