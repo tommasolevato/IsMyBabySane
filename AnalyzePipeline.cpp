@@ -62,7 +62,7 @@ bool AnalyzePipeline::OnNewFrame() {
 		cv::Mat depthResult(480, 640, CV_8UC3, temp);
 		//	////	//FIXME: ci vorrà un filtraggio?? forse no, forse è dannoso
 		//		subtract(depthResult,depthResult,depthResult,rs.getDepthMask());
-		bcg.findBackground(depthResult);
+		//bcg.findBackground(depthResult);
 
 
 		//	//	if(frameIstance==firstFrame_){
@@ -73,7 +73,8 @@ bool AnalyzePipeline::OnNewFrame() {
 		//	//		depthbggmm->StoreImg(frameIstance,"depth");
 		//	//	}
 		depthResult.release();
-		delete temp;
+		//TODO: decommentare
+		//delete temp;
 	}
 	//	//color_image->ReleaseAccess(&RGBData);
 	depth_image->ReleaseAccess(&depthData);
@@ -104,18 +105,28 @@ void AnalyzePipeline::analyze() {
 		}
 
 		unsigned __int8* rgbData = (unsigned __int8*) rgbframe.data;
-		unsigned __int16* depthData = (unsigned __int16*) depthframe.data;
+		unsigned __int8* depthData = (unsigned __int8*) depthframe.data;
 
-		unsigned __int16* resultData = (unsigned __int16*) malloc (640*480*4*sizeof(unsigned __int16));
+		unsigned __int16* realDepthData = (unsigned __int16*) malloc (640*480*sizeof(unsigned __int16));
+
+		for(int i=0; i < 640*480*3; i++) {
+			unsigned __int8 mostSignificantBits = depthData[3*i];
+			unsigned __int8 leastSignificantBits = depthData[(3*i)+1];
+			unsigned __int16 shiftedMostSignificantBits = (unsigned __int16) (mostSignificantBits << 8);
+			unsigned __int16 realValue = shiftedMostSignificantBits + (unsigned __int16) leastSignificantBits;
+		}
+
+
+		unsigned __int8* resultData = (unsigned __int8*) malloc (640*480*4*sizeof(unsigned __int8));
 
 		for(int i=0; i < 640*480; i++) {
 			//cout << (unsigned __int16)rgb[i] << endl;
-			resultData[(4*i)]   = (unsigned __int16)rgbData[3*i];
-			resultData[(4*i)+1] = (unsigned __int16)rgbData[(3*i)+1];
-			resultData[(4*i)+2] = (unsigned __int16)rgbData[(3*i)+2];
+			resultData[(4*i)]   = /*(unsigned __int16)*/ rgbData[3*i];
+			resultData[(4*i)+1] = /*(unsigned __int16)*/ rgbData[(3*i)+1];
+			resultData[(4*i)+2] = /*(unsigned __int16)*/ rgbData[(3*i)+2];
 
 			//TODO: verificare se funziona anche a 16 bit
-			resultData[(4*i)+3] = (unsigned __int16) depthData[i];
+			resultData[(4*i)+3] = (unsigned __int8) depthData[i];
 			//resultData[(4*i)+3] = (unsigned __int16) depthData[i];
 		}
 
@@ -133,17 +144,22 @@ void AnalyzePipeline::analyze() {
 		//}
 		//getchar();
 
-		Mat result(480, 640, CV_16UC4, resultData);
+		Mat result(480, 640, CV_8UC4, resultData);
 		//Mat result(480, 640, CV_8UC3, resultData);
 		//imshow("", result);
 		//waitKey(30);
 
 		cout << "frame: " << frameNumber << endl;
 		frameNumber++;
-		bcg.setOriginal(rgbframe);
-		bcg.findBackground(result);
-		//waitKey(30);
+		bcgRGB.setOriginal(rgbframe);
+		bcgRGB.findBackground("tutto", result);
+		//bcgRGB.findBackground("rgb", rgbframe);
 
+
+		//bcgDepth.setOriginal(depthframe);
+		//bcgDepth.findBackground("depth", depthframe);
+		//waitKey(30);
+		getchar();
 	}
 
 
@@ -270,9 +286,9 @@ pxcBYTE* AnalyzePipeline::computeDepthImage(	PXCImage::ImageData depthData,PXCIm
 
 		//	//FIXME: se per caso devo fare la media pesata allora devo fare un vero buffer, e non un semplice array di array
 
-		buffer[j][frameIstance%3] = frame[j];
-		buffer[j+1][frameIstance%3] = frame[j+1];
-		buffer[j+2][frameIstance%3] = frame[j+2];
+		//buffer[j][frameIstance%3] = frame[j];
+		//buffer[j+1][frameIstance%3] = frame[j+1];
+		//buffer[j+2][frameIstance%3] = frame[j+2];
 	}
 
 	for(int j=0; j < 640*480; j++) {
@@ -280,17 +296,17 @@ pxcBYTE* AnalyzePipeline::computeDepthImage(	PXCImage::ImageData depthData,PXCIm
 		if(frameIstance > 1){
 			//	//FIXME: se per caso devo fare la media pesata allora devo fare un vero buffer, e non un semplice array di array
 
-			frame[j] = (int) (((float)buffer[j][0] + buffer[j][1] + buffer[j][2]) / 3);
+			//frame[j] = (int) (((float)buffer[j][0] + buffer[j][1] + buffer[j][2]) / 3);
 
 			//cout << endl << endl << endl << (float)buffer[j][0] << " " << (float)buffer[j][1] << " " << (float)buffer[j][2] << endl;
 			//cout << (int)(((float)buffer[j][0] + buffer[j][1] + buffer[j][2]) / 3);
 
-			frame[j+1] = (int) (((float)buffer[j+1][0] + buffer[j+1][1] + buffer[j+1][2]) / 3);
+			//frame[j+1] = (int) (((float)buffer[j+1][0] + buffer[j+1][1] + buffer[j+1][2]) / 3);
 
 			//cout << endl << endl << endl << (float)buffer[j+1][0] << " " << (float)buffer[j+1][1] << " " << (float)buffer[j+1][2] << endl;
 			//cout << (int)(((float)buffer[j+1][0] + buffer[j+1][1] + buffer[j+1][2]) / 3);
 
-			frame[j+2] = (int) (((float)buffer[j+2][0] + buffer[j+2][1] + buffer[j+2][2]) / 3);
+			//frame[j+2] = (int) (((float)buffer[j+2][0] + buffer[j+2][1] + buffer[j+2][2]) / 3);
 
 			//cout << endl << endl << endl << (float)buffer[j+2][0] << " " << (float)buffer[j+2][1] << " " << (float)buffer[j+2][2] << endl;
 			//cout << (int)(((float)buffer[j+2][0] + buffer[j+2][1] + buffer[j+2][2]) / 3);

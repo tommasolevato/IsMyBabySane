@@ -12,7 +12,8 @@ using namespace cv;
 
 
 ConvertPipeline::~ConvertPipeline() {
-	delete filename;
+	//TODO: decommentare
+	//delete filename;
 	//TODO: heap danneggiato (probabilmente deriva da RGBPipeline)
 	//delete frame;
 }
@@ -20,10 +21,13 @@ ConvertPipeline::~ConvertPipeline() {
 
 void ConvertPipeline::OnImage(PXCImage* image) {
 	if(isValidImage(image)){
-		Mat temp = convertToMat(image);
-		writer.write(convertToMat(image));
+		Mat toWrite = convertToMat(image);
+		writer.write(toWrite);
+		imshow("Converting", toWrite);
+		waitKey(30);
 		image->ReleaseAccess(&data);
 	}
+	frameNumber++;
 }
 
 void ConvertPipeline::finalize() {
@@ -32,6 +36,8 @@ void ConvertPipeline::finalize() {
 
 void ConvertPipeline::convert() {
 	Size frameSize = getSize();
+	//TODO: al posto di false fare un metodo astratto "colorOrNot"
+
 	writer.open(Util::WChartToStdString(filename) + getName(), getFormatToEncodeTo(), 30, frameSize, true);
 	EnableImage(getImageType());
 	LoopFrames();
@@ -45,13 +51,18 @@ bool ConvertPipeline::isValidImage(PXCImage* image) {
 Mat ConvertPipeline::convertToMat(PXCImage* image) {
 	image->QueryInfo(&info);
 	computeImage();
-	//FIXME
-	//return Mat(info.height, info.width, getSourceFormat(), frame);
-
-	return Mat(getSize().height, getSize().width, getSourceFormat(), frame);
+	//FIXME: dimensioni hardcoded
+	Mat toReturn(480, 640, getSourceFormat(), frame);
+	int size = 2;
+	Mat element = getStructuringElement(cv::MORPH_RECT,
+		cv::Size(2 * size + 1, 2 * size + 1),
+		cv::Point(size, size) );
+	
+	//TODO: decommentare
+	//dilate(toReturn, toReturn, element);
+	//medianBlur(toReturn, toReturn, 3);
+	return toReturn;
 }
-
-//TODO: cambiare nome
 
 
 

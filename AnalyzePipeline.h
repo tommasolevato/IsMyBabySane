@@ -23,7 +23,8 @@ private:
 	//FIXME: queste classi alla fine sembrano poco utili
 	RGBImage RGBFrame;
 	DepthImage depthFrame;
-	BackgroundCV bcg;
+	BackgroundCV bcgRGB;
+	BackgroundCV bcgDepth;
 	VideoCapture rgbplayer;
 	VideoCapture depthplayer;
 
@@ -31,18 +32,12 @@ private:
 	int firstFrame_;
 	int lastFrame_;
 
-
 	bool checkFrameRange();
 	void combinedSpaceAnalysis(Mat rgb,Mat depth);
-
-	//FIXME: hardcoded
-	pxcBYTE** buffer;
 
 	//FIXME: chiedere a tommi se vanno bene questi attributi (e cambiare nome)
 	//TemporalAverageBGModel TABGM;
 	RegionSelecter rs;
-	BackgroundGMM * RGBbggmm;
-	BackgroundGMM * depthbggmm;
 
 
 	pxcBYTE* computeDepthImage(	PXCImage::ImageData depthData,PXCImage::ImageInfo depthInfo);
@@ -54,24 +49,10 @@ public:
 		UtilPipeline(Session::getSession(), file, false),firstFrame_(firstFrame),lastFrame_(lastFrame){
 			frameIstance=0;
 
-			buffer = new pxcBYTE*[3*640*480];
-			for(int i = 0; i<3*640*480; i++) {
-				buffer[i] = new pxcBYTE[3];
-			}
-			//TODO: fare una query sul primo frame di depth per costruire il buffer di smoothing
-
-
-
-			//system("rm -r C:/Users/Tommaso/Desktop/res/rgb/background/*");
-			//system("rm -r C:/Users/Tommaso/Desktop/res/rgb/foreground/*");
-			//system("rm -r C:/Users/Tommaso/Desktop/res/depth/background/*");
-			//system("rm -r C:/Users/Tommaso/Desktop/res/depth/foreground/*");
-
-
 			rgbplayer = VideoCapture(Util::WChartToStdString(file));
-			//FIXME: hardcoded
+			// FIXME: hardcoded
+			//depthplayer = VideoCapture("C:/Users/Tommaso/Desktop/AIV/testCreative_Depth.avi");
 			depthplayer = VideoCapture("E:/Acquisizioni Meyer/Registrazione3_incubatrice_Depth.avi");
-
 	}
 	Mat convertDepthToRGBUsingUVMap(Mat depthImage, PXCImage::ImageData* dData,PXCImage::ImageInfo& dInfo, PXCImage::ImageInfo& cInfo);
 	void analyze();

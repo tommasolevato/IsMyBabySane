@@ -29,6 +29,7 @@ protected:
 	PXCImage::ImageInfo info;
 	//FIXME
 	pxcBYTE* frame;
+	int frameNumber;
 	virtual void computeImage() = 0;
 
 
@@ -36,6 +37,7 @@ public:
 	ConvertPipeline(const pxcCHAR *filename) : UtilPipeline(Session::getSession(), filename, false)  {
 		this->filename = filename;
 		frame = (pxcBYTE*) malloc(sizeof(pxcBYTE));
+		frameNumber = 0;
 	}
 
 	virtual ~ConvertPipeline();

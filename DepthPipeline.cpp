@@ -5,7 +5,7 @@ Size DepthPipeline::getSize() {
 }
 
 int DepthPipeline::getFormatToEncodeTo() {
-	return CV_FOURCC('L', 'A', 'G', 'S');
+	return CV_FOURCC('X', 'V', 'I', 'D');
 }
 
 string DepthPipeline::getName() {
@@ -13,7 +13,7 @@ string DepthPipeline::getName() {
 }
 
 int DepthPipeline::getSourceFormat() {
-	return CV_16UC3;
+	return CV_8UC3;
 }
 
 PXCImage::ColorFormat DepthPipeline::getImageType(){
@@ -22,45 +22,55 @@ PXCImage::ColorFormat DepthPipeline::getImageType(){
 
 
 void DepthPipeline::computeImage() {
-	unsigned __int16* temp = initializeFrame();
-	upscaleFrame(temp);
-	delete temp;
+	initializeFrame();
+	upscaleFrame();
+	
+	//TODO: decommentare
+	//delete temp;
 }
 
 
-unsigned __int16* DepthPipeline::initializeFrame() {
-	delete frame;
+void DepthPipeline::initializeFrame() {
+	//TODO: decommentare
+	//delete frame;
 	//TODO: trovare nomi migliori per i prossimi 2
-	unsigned __int16* src  = (unsigned __int16*) data.planes[0]; 
-	unsigned __int16* temp = (unsigned __int16*) malloc(3*info.width*info.height*sizeof(unsigned __int16));
-
+	unsigned __int16* src  = (unsigned __int16*) data.planes[0];
+	//temp = (unsigned __int8*) malloc(3*info.width*info.height*sizeof(unsigned __int8));
 	for(unsigned int j=0; j < info.width*info.height; j++) {
 		float correctedPixelValue = correctPixelValue((float)src[j]);
 
-		temp[3*j]	  = (unsigned __int16) (correctedPixelValue*maxPixelValue);
-		temp[(3*j)+1] = (unsigned __int16) (correctedPixelValue*maxPixelValue);
-		temp[(3*j)+2] = (unsigned __int16) (correctedPixelValue*maxPixelValue);
-	}
+		unsigned __int16 valueToEncode = (unsigned __int16) (correctedPixelValue*maxPixelValue);
 
-	return temp;
+		unsigned __int8 mostSignificantBits = (unsigned __int8) (valueToEncode >> 8);
+
+		temp[3*j]	  = mostSignificantBits;
+		temp[(3*j)+1] = (unsigned __int8) valueToEncode;
+		temp[(3*j)+2] = 0;
+	}
 }
 
-void DepthPipeline::upscaleFrame(unsigned __int16* frameToUpscale) {
+void DepthPipeline::upscaleFrame() {
 	float *uvmap=(float*)data.planes[2];
 
-	frame = (pxcBYTE*) malloc (3*getSize().area()*sizeof(unsigned __int16));
+	//frame = (pxcBYTE*) malloc (3*getSize().area()*sizeof(unsigned __int8));
+
+	for(unsigned int j=0; j < 3*getSize().area(); j++) {
+
+		frame[j] = 0;
+
+	}
+
 
 	for(unsigned int j=0; j < info.width*info.height; j++) {
 		int index = computeUpscaledIndex(j);
 		if(index >= 0) {
-			unsigned __int16* upscaledFrame = (unsigned __int16*)frame;
-
-			upscaledFrame[index]   = frameToUpscale[3*j];
-			upscaledFrame[index+1] = frameToUpscale[(3*j)+1];
-			upscaledFrame[index+2] = frameToUpscale[(3*j)+2];
+			frame[index]   = temp[3*j];
+			frame[index+1] = temp[(3*j)+1];
+			frame[index+2] = temp[(3*j)+2];
 		}
 	}
 }
+
 
 int DepthPipeline::computeUpscaledIndex(int originalPixelIndex) {
 	float *uvmap=(float*)data.planes[2];

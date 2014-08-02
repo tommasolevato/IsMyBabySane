@@ -6,7 +6,10 @@
 class DepthPipeline : public ConvertPipeline {
 
 public: 
-	DepthPipeline(const pxcCHAR *file) : ConvertPipeline(file), maxPixelValue(65535), correctionFactor(0.016) {}
+	DepthPipeline(const pxcCHAR *file) : ConvertPipeline(file), maxPixelValue(65535), correctionFactor(0.016) {
+		temp = (unsigned __int8*) malloc(3*getSize().area()*sizeof(unsigned __int8));
+		frame = (pxcBYTE*) malloc (3*getSize().area()*sizeof(unsigned __int8));
+	}
 
 	Size getSize();
 	int getFormatToEncodeTo();
@@ -17,11 +20,17 @@ public:
 private:
 	const int maxPixelValue;
 	const double correctionFactor;
+
+	//TODO: cambiare nome
+	unsigned __int8* temp;
+
+
+
 	void computeImage();
 	float correctPixelValue(float pixelValue);
 	int computeUpscaledIndex(int j);
-	unsigned __int16* initializeFrame();
-	void upscaleFrame(unsigned __int16* frameToUpscale);
+	void initializeFrame();
+	void upscaleFrame();
 };
 
 #endif
