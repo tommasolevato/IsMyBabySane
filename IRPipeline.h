@@ -18,7 +18,7 @@ public:
 
 private:
 	void computeImage();
-
+	Mat elaborateRawMat(Mat toElaborate);
 };
 
 #endif

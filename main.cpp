@@ -3,36 +3,30 @@
 #include <iostream>
 #include <string>
 #include "VideoPlayer.h"
-
+#include "CommandLineArgumentParser.h"
 
 using namespace std;
 
 int main(int argc, char* argv[]) {
-	//if(argc < 2) {
-	//	cout << "Usage: isMyBabySane FILENAMETOCONVERT" << endl;
-	//	exit(0);
-	//}
-	////Converter c(argv[1]);
-	//Converter c("C:/Users/Tommaso/Desktop/testCreative");
 
+	CommandLineArgumentParser parser(argv, argc);
+	
 	try{
-		//Converter c("E:/Acquisizioni Meyer/Registrazione3_incubatrice");
-		//Converter c("C:/Users/Tommaso/Desktop/AIV/testCreative");
-		//c.convert();
+		if(parser.cmdOptionExists("-c")) {
+			string intelFile = parser.getCmdOption("-c");
+			Converter converter(intelFile.c_str());
+			converter.convert();
+			exit(0);
+		}
 
+		if(parser.cmdOptionExists("-rgb") && parser.cmdOptionExists("-d")) {
+			string rgbFile   = parser.getCmdOption("-rgb");
+			string depthFile = parser.getCmdOption("-d");
 
-
-		//unsigned int test = 511;
-
-		//int test2 = (unsigned char) test;
-		//cout << (int)test2;
-		//getchar();
-		//Questo costruttore prende inizio e fine frame per analizzare uno spezzone di video
-		//AnalyzePipeline c(L"C:/Users/Tommaso/Desktop/AIV/testCreative_RGB.avi");
-		
-		AnalyzePipeline c(L"E:/Acquisizioni Meyer/Registrazione3_incubatrice_RGB.avi");
-		//AnalyzePipeline c(L"C:/Users/Tommaso/Desktop/Filmato.mp4");
-		c.analyze();
+			AnalyzePipeline analyzer(rgbFile, depthFile);
+			analyzer.analyze();
+			exit(0);
+		}
 
 		//VideoPlayer p("C:/Users/Tommaso/Desktop/AIV/testCreative_Depth.avi");
 		//p.playAndSaveFrames();
@@ -47,3 +41,5 @@ int main(int argc, char* argv[]) {
 }
 
 
+// -c C:/Users/Tommaso/Desktop/AIV/testCreative      -rgb C:/Users/Tommaso/Desktop/AIV/testCreative_RGB.avi      -d C:/Users/Tommaso/Desktop/AIV/testCreative_Depth.avi
+// -c E:/Acquisizioni Meyer/Registrazione3_incubatrice      -rgb E:/Acquisizioni Meyer/Registrazione3_incubatrice_RGB.avi      -d E:/Acquisizioni Meyer/Registrazione3_incubatrice_Depth.avi

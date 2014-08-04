@@ -62,7 +62,7 @@ void RegionSelecter::setMaskFromMouse(Mat frame){
 	std::copy(vect.begin(),vect.end(),points[0]);
 	const Point* pts[1]={const_cast<Point*>(points[0])};
 
-	int npt[] = {vect.size()};
+	int npt[] = {(int)vect.size()};
 	npoints=npt;
 
 	Mat result=Mat::ones(frame.rows,frame.cols,CV_8U)*255; 

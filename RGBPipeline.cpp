@@ -24,3 +24,7 @@ PXCImage::ColorFormat RGBPipeline::getImageType(){
 void RGBPipeline::computeImage() {
 	frame =  data.planes[0];
 }
+
+Mat RGBPipeline::elaborateRawMat(Mat toElaborate) {
+	return toElaborate;
+}

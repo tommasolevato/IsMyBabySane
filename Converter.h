@@ -9,6 +9,8 @@
 class Converter {
 public:
 	Converter(const char* file) : RGBConverter(charPtrToWCharPtr(file)), DepthConverter(charPtrToWCharPtr(file)), IRConverter(charPtrToWCharPtr(file)) {}
+
+
 	void convert();
 
 private:

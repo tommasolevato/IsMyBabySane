@@ -31,6 +31,7 @@ protected:
 	pxcBYTE* frame;
 	int frameNumber;
 	virtual void computeImage() = 0;
+	virtual Mat elaborateRawMat(Mat toElaborate) = 0;
 
 
 public: 

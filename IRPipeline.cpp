@@ -33,16 +33,16 @@ PXCImage::ColorFormat IRPipeline::getImageType(){
 	return PXCImage::COLOR_FORMAT_DEPTH;
 }
 
-
+//TODO: aggiustare e togliere gli eventuali copia-incolla con DepthPipeline
 void IRPipeline::computeImage() {
 	delete frame;
 	unsigned __int16* src = (unsigned __int16*)data.planes[1];
 	//XXX: brutta l'apparente discrepanza tra pxcBYTE e unsigned __int8
 	frame = (pxcBYTE*) malloc (3*info.width*info.height*sizeof(unsigned __int8));
 
-	for(int j=0; j < info.width*info.height; j++) {
+	for(unsigned int j=0; j < info.width*info.height; j++) {
 		float val = (float)src[j] / 65535;
-		val = ( ((val)/(0.016)));
+		val = (float)( ((val)/(0.016)));
 		val = max(val, 0.f);
 		val = min(val, 1.f);
 
@@ -55,44 +55,7 @@ void IRPipeline::computeImage() {
 	//getchar();
 }
 
+Mat IRPipeline::elaborateRawMat(Mat toElaborate) {
+	return toElaborate;
 
-
-
-//float DEFAULT_SCALE = 30.0f;
-//float MAX_Z = 0.5f/13.0f;
-//float max_distance = MAX_Z;
-//float m_scale = 0.09f*320;
-//float range_min = .0f;
-//float range_max = max_distance * m_scale / DEFAULT_SCALE;
-
-
-//for(int j=0; j < 640*480; j++) {
-//	frame[3*j] = 0;
-//	frame[(3*j)+1] = 0;
-//	frame[(3*j)+2] = 0;
-//}
-
-
-//for(int j=0; j < 320*240; j++) {
-//	float val = (float)src[j] / 65535;
-//	val = 1.f - ( ((val)/(0.015)));
-//	val = max(val, 0.f);
-//	val = min(val, 1.f);
-
-
-
-//	float *uvmap=(float*)data.planes[2];
-//		
-//	int x = j%320;
-//	int y = floor(j/320);
-//	int index=((int)y)*320+x;
-//	if(uvmap[index*2] > 0 && uvmap[index*2+1] > 0) {
-//		float newX = uvmap[(index*2)]*640;
-//		float newY = uvmap[(index*2)+1]*480;
-//		int index = (int)(3* (( (int)newY*640) + ((int)newX) ));
-
-//		frame[index] = (unsigned __int8)(255*val);
-//		frame[index+1] = (unsigned __int8)(255*val);
-//		frame[index+2] = (unsigned __int8)(255*val);
-//	}
-//}
+}

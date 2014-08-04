@@ -2,62 +2,48 @@
 #define ANALYZEPIPELINE_H
 
 
-#include <util_pipeline.h>
-#include <opencv2\opencv.hpp>
-#include <pxcimage.h>
-#include <limits>
-#include "Util.h"
-#include "Session.h"
-#include "RGBImage.h"
-#include "DepthImage.h"
 #include "RegionSelecter.h"
-#include "BackgroundGMM.h"
 #include "BackgroundCV.h"
+#include "Util.h"
+#include "MatEncoder.h"
 
 using namespace cv;
 using namespace std;
 
-class AnalyzePipeline : public UtilPipeline {
+class AnalyzePipeline {
 
 private:
-	//FIXME: queste classi alla fine sembrano poco utili
-	RGBImage RGBFrame;
-	DepthImage depthFrame;
 	BackgroundCV bcgRGB;
 	BackgroundCV bcgDepth;
 	VideoCapture rgbplayer;
 	VideoCapture depthplayer;
-
 	int frameIstance;
-	int firstFrame_;
-	int lastFrame_;
-
-	bool checkFrameRange();
-	void combinedSpaceAnalysis(Mat rgb,Mat depth);
-
-	//FIXME: chiedere a tommi se vanno bene questi attributi (e cambiare nome)
-	//TemporalAverageBGModel TABGM;
 	RegionSelecter rs;
-
-
-	pxcBYTE* computeDepthImage(	PXCImage::ImageData depthData,PXCImage::ImageInfo depthInfo);
-
-	//bool isValidImage(PXCImage* image, PXCImage::ImageData data);
+	MatEncoder matEncoder;
 
 public: 
-	AnalyzePipeline(const pxcCHAR *file,int firstFrame=1,int lastFrame=std::numeric_limits<int>::max()) :
-		UtilPipeline(Session::getSession(), file, false),firstFrame_(firstFrame),lastFrame_(lastFrame){
-			frameIstance=0;
-
-			rgbplayer = VideoCapture(Util::WChartToStdString(file));
-			// FIXME: hardcoded
-			//depthplayer = VideoCapture("C:/Users/Tommaso/Desktop/AIV/testCreative_Depth.avi");
-			depthplayer = VideoCapture("E:/Acquisizioni Meyer/Registrazione3_incubatrice_Depth.avi");
+	/*AnalyzePipeline(string rgbFile, string depthFile) {
+		frameIstance=0;
+		rgbplayer = VideoCapture(rgbFile);
+		depthplayer = VideoCapture(depthFile);
 	}
-	Mat convertDepthToRGBUsingUVMap(Mat depthImage, PXCImage::ImageData* dData,PXCImage::ImageInfo& dInfo, PXCImage::ImageInfo& cInfo);
+
+	AnalyzePipeline(wchar_t* rgbFile, wchar_t* depthFile) {
+		frameIstance=0;
+		rgbplayer = VideoCapture(Util::WChartToStdString(rgbFile));
+		depthplayer = VideoCapture(Util::WChartToStdString(depthFile));
+	}
+
+	AnalyzePipeline(const char* rgbFile, const char* depthFile) {
+		frameIstance=0;
+		rgbplayer = VideoCapture(rgbFile);
+		depthplayer = VideoCapture(depthFile);
+	}*/
+
+	AnalyzePipeline(string rgbFile, string depthFile) : rgbplayer(rgbFile), depthplayer(depthFile), frameIstance(0) {}
+
+
 	void analyze();
-	bool OnNewFrame();
-	int getIstance();
 };
 
 #endif

@@ -2,13 +2,14 @@
 #define DEPTHPIPELINE_H
 
 #include "ConvertPipeline.h"
+#include "MatEncoder.h"
 
 class DepthPipeline : public ConvertPipeline {
 
 public: 
 	DepthPipeline(const pxcCHAR *file) : ConvertPipeline(file), maxPixelValue(65535), correctionFactor(0.016) {
-		temp = (unsigned __int8*) malloc(3*getSize().area()*sizeof(unsigned __int8));
-		frame = (pxcBYTE*) malloc (3*getSize().area()*sizeof(unsigned __int8));
+		temp = (unsigned __int16*) malloc(getSize().area()*sizeof(unsigned __int16));
+		frame = (pxcBYTE*) malloc (getSize().area()*sizeof(unsigned __int16));
 	}
 
 	Size getSize();
@@ -20,11 +21,12 @@ public:
 private:
 	const int maxPixelValue;
 	const double correctionFactor;
+	MatEncoder matEncoder;
 
 	//TODO: cambiare nome
-	unsigned __int8* temp;
+	unsigned __int16* temp;
 
-
+	Mat elaborateRawMat(Mat toElaborate);
 
 	void computeImage();
 	float correctPixelValue(float pixelValue);

@@ -36,8 +36,6 @@ void ConvertPipeline::finalize() {
 
 void ConvertPipeline::convert() {
 	Size frameSize = getSize();
-	//TODO: al posto di false fare un metodo astratto "colorOrNot"
-
 	writer.open(Util::WChartToStdString(filename) + getName(), getFormatToEncodeTo(), 30, frameSize, true);
 	EnableImage(getImageType());
 	LoopFrames();
@@ -52,15 +50,8 @@ Mat ConvertPipeline::convertToMat(PXCImage* image) {
 	image->QueryInfo(&info);
 	computeImage();
 	//FIXME: dimensioni hardcoded
-	Mat toReturn(480, 640, getSourceFormat(), frame);
-	int size = 2;
-	Mat element = getStructuringElement(cv::MORPH_RECT,
-		cv::Size(2 * size + 1, 2 * size + 1),
-		cv::Point(size, size) );
-	
-	//TODO: decommentare
-	//dilate(toReturn, toReturn, element);
-	//medianBlur(toReturn, toReturn, 3);
+	Mat rawMat(480, 640, getSourceFormat(), frame);
+	Mat toReturn = elaborateRawMat(rawMat);
 	return toReturn;
 }
 
