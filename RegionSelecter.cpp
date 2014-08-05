@@ -6,7 +6,6 @@
 using namespace cv;
 using namespace std;
 
-
 void RegionSelecter::CallBackFunc(int event, int x, int y, int flags, void* ptr)
 {
 	if  ( event == CV_EVENT_LBUTTONDOWN )
@@ -105,7 +104,6 @@ void RegionSelecter::setMaskFromMouse(Mat frame){
 }
 
 void RegionSelecter::setDepthMask(){
-
 	//Point* depthPoints[1];
 	//depthPoints[0]=new Point[vect.size()];
 	//std::copy(vect.begin(),vect.end(),depthPoints[0]);

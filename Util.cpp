@@ -1,8 +1,5 @@
 #include "Util.h"
 
-
-
-
 std::string Util::WChartToStdString( const wchar_t *s, char dfault, const std::locale& loc) {
 	std::ostringstream stm;
 

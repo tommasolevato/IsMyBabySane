@@ -2,7 +2,8 @@
 #include "AnalyzePipeline.h"
 #include <iostream>
 #include <string>
-#include "VideoPlayer.h"
+#include "RGBPlayer.h"
+#include "DepthPlayer.h"
 #include "CommandLineArgumentParser.h"
 
 using namespace std;
@@ -10,7 +11,8 @@ using namespace std;
 int main(int argc, char* argv[]) {
 
 	CommandLineArgumentParser parser(argv, argc);
-	
+
+
 	try{
 		if(parser.cmdOptionExists("-c")) {
 			string intelFile = parser.getCmdOption("-c");
@@ -28,10 +30,20 @@ int main(int argc, char* argv[]) {
 			exit(0);
 		}
 
-		//VideoPlayer p("C:/Users/Tommaso/Desktop/AIV/testCreative_Depth.avi");
-		//p.playAndSaveFrames();
+		if(parser.cmdOptionExists("-p")) {
+			string rgbFile   = parser.getCmdOption("-p");
+			RGBPlayer p(rgbFile);
+			p.play();
+			exit(0);
+		}
+
+		if(parser.cmdOptionExists("-pd")) {
+			string depthFile   = parser.getCmdOption("-pd");
+			DepthPlayer p(depthFile);
+			p.play();
+			exit(0);
+		}
 		
-		//p.play("C:/Users/Tommaso/Desktop/AIV/testCreative_RGB.avi");
 	}
 	catch( std::exception& e ){
 		string err_msg = e.what();

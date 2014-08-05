@@ -1,5 +1,5 @@
-#ifndef OPTICALFLOW_H
-#define OPTICALFLOW_H
+#pragma once
+
 
 #include <opencv2\core\core.hpp>
 using namespace cv;
@@ -10,11 +10,12 @@ public:
 	Mat computeLKOpticalFlow(bool usingPyramid);
 	//Mat coputeFarnebackOpticalFlow();
 
+
+
 private:
 	Mat previousImage;
 	Point* previousPts;
 	//Mat* previousPyramid;
-
 	//Pyramid parameters
 	//Mat img;//8-bit input image.
 	////pyramid // output pyramid.
@@ -25,5 +26,3 @@ private:
 	//int derivBorder;// the border mode for gradients.
 	//bool tryReuseInputImage;// put ROI of input image into the pyramid if possible. You can pass false to force dat
 };
-
-#endif

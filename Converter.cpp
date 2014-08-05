@@ -1,9 +1,8 @@
 #include "Converter.h"
 
 void Converter::convert() {
-	
-	DepthConverter.convert();
 	RGBConverter.convert();
+	DepthConverter.convert();
 	//IRConverter.convert();
 }
 

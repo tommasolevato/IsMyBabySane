@@ -11,12 +11,9 @@ string CommandLineArgumentParser::getCmdOption(const std::string & option) {
 		return *itr;
 	}
 	return 0;
-
 }
 
 
 bool CommandLineArgumentParser::cmdOptionExists(const std::string& option) {
-
 	return std::find(begin, end, option) != end;
-
 }

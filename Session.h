@@ -1,5 +1,4 @@
-#ifndef SESSION_H
-#define SESSION_H
+#pragma once
 
 
 #include <pxcsession.h>
@@ -8,8 +7,8 @@ class Session {
 public:
 	static PXCSession* getSession();
 
+
+
 private:
 	static PXCSession* session;
 };
-
-#endif

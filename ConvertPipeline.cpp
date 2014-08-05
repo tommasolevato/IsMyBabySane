@@ -6,10 +6,8 @@
 #include "Util.h"
 #include <util_render.h>
 
-
 using namespace std;
 using namespace cv;
-
 
 ConvertPipeline::~ConvertPipeline() {
 	//TODO: decommentare
@@ -17,7 +15,6 @@ ConvertPipeline::~ConvertPipeline() {
 	//TODO: heap danneggiato (probabilmente deriva da RGBPipeline)
 	//delete frame;
 }
-
 
 void ConvertPipeline::OnImage(PXCImage* image) {
 	if(isValidImage(image)){
@@ -36,6 +33,7 @@ void ConvertPipeline::finalize() {
 
 void ConvertPipeline::convert() {
 	Size frameSize = getSize();
+	//TODO: prima di fare writer.open() verificare se filename esiste
 	writer.open(Util::WChartToStdString(filename) + getName(), getFormatToEncodeTo(), 30, frameSize, true);
 	EnableImage(getImageType());
 	LoopFrames();

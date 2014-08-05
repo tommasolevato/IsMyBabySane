@@ -1,5 +1,4 @@
-#ifndef ANALYZEPIPELINE_H
-#define ANALYZEPIPELINE_H
+#pragma once
 
 
 #include "RegionSelecter.h"
@@ -11,6 +10,11 @@ using namespace cv;
 using namespace std;
 
 class AnalyzePipeline {
+public: 
+	AnalyzePipeline(string rgbFile, string depthFile) : rgbplayer(rgbFile), depthplayer(depthFile), frameIstance(0) {}
+	void analyze();
+
+
 
 private:
 	BackgroundCV bcgRGB;
@@ -20,30 +24,4 @@ private:
 	int frameIstance;
 	RegionSelecter rs;
 	MatEncoder matEncoder;
-
-public: 
-	/*AnalyzePipeline(string rgbFile, string depthFile) {
-		frameIstance=0;
-		rgbplayer = VideoCapture(rgbFile);
-		depthplayer = VideoCapture(depthFile);
-	}
-
-	AnalyzePipeline(wchar_t* rgbFile, wchar_t* depthFile) {
-		frameIstance=0;
-		rgbplayer = VideoCapture(Util::WChartToStdString(rgbFile));
-		depthplayer = VideoCapture(Util::WChartToStdString(depthFile));
-	}
-
-	AnalyzePipeline(const char* rgbFile, const char* depthFile) {
-		frameIstance=0;
-		rgbplayer = VideoCapture(rgbFile);
-		depthplayer = VideoCapture(depthFile);
-	}*/
-
-	AnalyzePipeline(string rgbFile, string depthFile) : rgbplayer(rgbFile), depthplayer(depthFile), frameIstance(0) {}
-
-
-	void analyze();
 };
-
-#endif

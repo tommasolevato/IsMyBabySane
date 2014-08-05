@@ -1,5 +1,5 @@
-#ifndef BACKGROUNDCV_H
-#define BACKGROUNDCV_H
+#pragma once
+
 
 #include <opencv2\core\core.hpp>
 #include <opencv2\opencv.hpp>
@@ -13,12 +13,9 @@ public:
 	//TODO: eliminare
 	void setOriginal(Mat or);
 
+
+
 private:
 	BackgroundSubtractorMOG2 sb;
 	Mat original;
-
 };
-
-
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef CONVERTPIPELINE_H
-#define CONVERTPIPELINE_H
+#pragma once
 
 
 #include <util_pipeline.h>
@@ -14,14 +13,22 @@ using namespace cv;
 using namespace std;
 
 class ConvertPipeline : public UtilPipeline {
+public: 
+	ConvertPipeline(const pxcCHAR *filename) : UtilPipeline(Session::getSession(), filename, false)  {
+		this->filename = filename;
+		frame = (pxcBYTE*) malloc(sizeof(pxcBYTE));
+		frameNumber = 0;
+	}
+	virtual ~ConvertPipeline();
+	void OnImage(PXCImage *image);
+	void convert();
+	void finalize();
+	virtual Size getSize() = 0;
+	virtual int getFormatToEncodeTo() = 0;
+	virtual string getName() = 0;
+	virtual int getSourceFormat() = 0;
+	virtual PXCImage::ColorFormat getImageType() = 0;
 
-private:
-	VideoWriter writer;
-	const pxcCHAR* filename; //TODO: forse sarebbe il caso di aggirare questo const
-
-	virtual bool isValidImage(PXCImage* image);
-	Mat convertToMat(PXCImage* image);
-	//std::string WChartToStdString(const wchar_t* s, char dfault = '?', const std::locale& loc = std::locale());
 
 
 protected:
@@ -34,24 +41,11 @@ protected:
 	virtual Mat elaborateRawMat(Mat toElaborate) = 0;
 
 
-public: 
-	ConvertPipeline(const pxcCHAR *filename) : UtilPipeline(Session::getSession(), filename, false)  {
-		this->filename = filename;
-		frame = (pxcBYTE*) malloc(sizeof(pxcBYTE));
-		frameNumber = 0;
-	}
 
-	virtual ~ConvertPipeline();
-
-	void OnImage(PXCImage *image);
-	void convert();
-	void finalize();
-
-	virtual Size getSize() = 0;
-	virtual int getFormatToEncodeTo() = 0;
-	virtual string getName() = 0;
-	virtual int getSourceFormat() = 0;
-	virtual PXCImage::ColorFormat getImageType() = 0;
+private:
+	VideoWriter writer;
+	//TODO: forse sarebbe il caso di aggirare questo const
+	const pxcCHAR* filename; 
+	virtual bool isValidImage(PXCImage* image);
+	Mat convertToMat(PXCImage* image);
 };
-
-#endif

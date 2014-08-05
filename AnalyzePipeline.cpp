@@ -6,7 +6,6 @@
 using namespace std;
 using namespace cv;
 
-
 void AnalyzePipeline::analyze() {
 	int frameNumber = 0;
 	for(;;) {
@@ -38,5 +37,4 @@ void AnalyzePipeline::analyze() {
 
 		delete resultData;
 	}
-
 }

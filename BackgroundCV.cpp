@@ -1,13 +1,11 @@
 #include "BackgroundCV.h"
 
-
 BackgroundCV::BackgroundCV() {
 	sb = BackgroundSubtractorMOG2(5, 0, false);
 }
 
 void BackgroundCV::setOriginal(Mat or) {
 	this->original = or;
-
 }
 
 Mat BackgroundCV::findBackground(string name, Mat image) {
@@ -19,6 +17,5 @@ Mat BackgroundCV::findBackground(string name, Mat image) {
 	//cvMoveWindow("frame", 600, 10);
 	waitKey(30);
 	return foreground;
-
 }
 

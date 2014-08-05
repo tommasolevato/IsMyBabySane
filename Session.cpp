@@ -1,6 +1,5 @@
 #include "Session.h"
 
-
 PXCSession* Session::session;
 
 PXCSession* Session::getSession() {

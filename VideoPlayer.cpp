@@ -6,6 +6,7 @@ using namespace cv;
 using namespace std;
 
 void VideoPlayer::play() {
+	frameNumber = 0;
 	if ( !cap.isOpened() )  // if not success, exit program
 		cout << "Cannot open the video file" << endl;
 
@@ -16,8 +17,8 @@ void VideoPlayer::play() {
 	}
 }
 
-
 void VideoPlayer::playAndSaveFrames() {
+	frameNumber = 0;
 	if ( !cap.isOpened() )  // if not success, exit program
 		cout << "Cannot open the video file" << endl;
 
@@ -28,15 +29,4 @@ void VideoPlayer::playAndSaveFrames() {
 		//TODO: usare il filename del video (splittato togliendo l'estensione e aggiungendo frameNumber e png)
 		imwrite("C:/Users/Tommaso/Desktop/frames/" + to_string(frameNumber) + ".png", frame);
 	}
-}
-
-
-bool VideoPlayer::playFrame() {
-	bool success = cap.read(frame);
-	if(success) {
-		imshow("", frame);
-		waitKey(30);
-	}
-	frameNumber++;
-	return success;
 }

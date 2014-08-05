@@ -1,12 +1,11 @@
-#ifndef REGIONSELECTER_H
-#define REGIONSELECTER_H
+#pragma once
+
 
 #include <opencv2\core\core.hpp>
 #include <vector>
 using namespace cv;
 
 class RegionSelecter{
-
 public:
 	RegionSelecter(){}
 	void setMaskFromMouse(Mat frame);
@@ -15,6 +14,7 @@ public:
 	static void CallBackFunc(int event, int x, int y, int flags, void* userdata);
 	Mat getMask();
 	Mat getDepthMask();
+
 
 
 private:
@@ -28,5 +28,3 @@ private:
 	void reset();
 	void setDepthMask();
 };
-
-#endif
