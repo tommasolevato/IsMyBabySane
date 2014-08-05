@@ -6,6 +6,9 @@
 using namespace cv;
 using namespace std;
 
+Mat RegionSelecter::temp;
+vector<Point> RegionSelecter::vect;
+
 void RegionSelecter::CallBackFunc(int event, int x, int y, int flags, void* ptr)
 {
 	if  ( event == CV_EVENT_LBUTTONDOWN )
@@ -14,49 +17,28 @@ void RegionSelecter::CallBackFunc(int event, int x, int y, int flags, void* ptr)
 		p->x = x;
 		p->y = y;
 		cout<<x<<" "<<y<<endl;
+		circle(temp,*p,3,Scalar( 0, 0, 255 ),-1,8);
+		vect.push_back(*p);
+		imshow("Select",temp);
 	}
+
 }
 
 void RegionSelecter::setMaskFromMouse(Mat frame){
-
-	Mat temp;
 	frame.copyTo(temp);
 	frame.copyTo(originalFrame);
 
-	bool userIsSelecting=true;
-	string s="y";
+	namedWindow("Select", 1);
+	printInstruction();
 
-	while(userIsSelecting){
-		namedWindow("Select", 1);
-		printInstruction();
+	Point p;
+	setMouseCallback("Select", CallBackFunc,(&p));
+	imshow("Select",temp);
 
-		Point p;
-		setMouseCallback("Select", CallBackFunc,(&p));
-		imshow("Select",temp);
-		waitKey(0);
-		vect.push_back(p);
+	while(waitKey(0) != 13) {}
 
-		if(p.x==0 && p.y==0)
-		{
-			cout<<"Read better the istruction"<<endl;
-			vect.erase(vect.begin()+(vect.size()-1)); //erase the last element of the vector, it is corrupted
-		}
-		else{
-			circle(temp,p,3,Scalar( 0, 0, 255 ),-1,8);
-		}
-
-		cout<<"Si intende selezionare altri punti? (y/n)"<<endl;
-		cin >> s;
-		if(s=="n" && vect.size()>2){
-			userIsSelecting=false;
-		}
-		else{
-			if(s=="n" && vect.size()<3){
-				cout<<"Non è possibile evidenziare la regione con meno di 3 punti"<<endl;
-			}
-		}
-		destroyAllWindows();
-	}
+	destroyAllWindows();
+	//}
 	points[0]=new Point[vect.size()];
 	std::copy(vect.begin(),vect.end(),points[0]);
 	const Point* pts[1]={const_cast<Point*>(points[0])};
@@ -64,44 +46,41 @@ void RegionSelecter::setMaskFromMouse(Mat frame){
 	int npt[] = {(int)vect.size()};
 	npoints=npt;
 
-	Mat result=Mat::ones(frame.rows,frame.cols,CV_8U)*255; 
-	fillPoly( result, pts, npt, 1, 0, 8 );
-	imshow("Mask",result);
-	cv::moveWindow("Mask",0,0);
-	waitKey(30);
+	//TODO: hardcoded
+	//TODO: non sono sicuro ma sembra funzionare
+	Mat result = Mat::zeros(480,640,CV_16UC4);
+	fillPoly( result, pts, npt, 1, 1, 8 );
+	//cv::moveWindow("Mask",0,0);
 	mask=result;
 
-	subtract(frame,frame,frame,mask);
-	imshow("Focus Region",frame);
-	cv::moveWindow("Focus Region",650,0);
-	waitKey(30);
+	//subtract(frame,frame,frame,mask);
+	//imshow("Focus Region",frame);
+	//cv::moveWindow("Focus Region",650,0);
+	//waitKey(30);
 
 	setDepthMask();
 
-	cout<<"Is this the region you wanted to evidence?(y/n)"<<endl;
-	cin >> s;
+	string name=string("RGBMask.jpg");
+	const char * charName = name.c_str();
+	imwrite(charName,mask);
 
-	cout<<"Do you want to save the mask?(y/n)"<<endl;
-	string str="y";
-	cin >> str;
-	if(str=="y"){
-		string name=string("RGBMask.jpg");
-		const char * charName = name.c_str();
-		imwrite(charName,mask);
-
-		name=string("DepthMask.jpg");
-		charName = name.c_str();
-		imwrite(charName,depthMask);
-	}
+	name=string("DepthMask.jpg");
+	charName = name.c_str();
+	imwrite(charName,depthMask);
 	destroyAllWindows();
-
-	if(s=="n"){
-		//FIXME:questo if non funziona ancora
-		cout<<"Retry!!"<<endl;
-		reset();//TODO: questa c'è da farla!
-		setMaskFromMouse(originalFrame);
-	}
 }
+
+/*else{
+if(s=="n" && vect.size()<3){
+cout<<"Non è possibile evidenziare la regione con meno di 3 punti"<<endl;
+}
+}*/
+
+
+
+
+
+
 
 void RegionSelecter::setDepthMask(){
 	//Point* depthPoints[1];

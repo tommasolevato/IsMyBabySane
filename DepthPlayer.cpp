@@ -1,4 +1,5 @@
 #include "DepthPlayer.h"
+#include "RegionSelecter.h"
 
 bool DepthPlayer::playFrame() {
 	//TODO: eliminare copia incolla con metodo precedente

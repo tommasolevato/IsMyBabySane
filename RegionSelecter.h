@@ -18,12 +18,13 @@ public:
 
 
 private:
+	static Mat temp;
 	Mat originalFrame;
 	Mat mask;
 	Mat depthMask;
 	Point* points[1];
 	int* npoints;
-	std::vector<Point> vect;
+	static std::vector<Point> vect;
 	void printInstruction();
 	void reset();
 	void setDepthMask();

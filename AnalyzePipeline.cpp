@@ -15,6 +15,10 @@ void AnalyzePipeline::analyze() {
 			break;
 		}
 
+		if(frameNumber == 0) {
+			rs.setMaskFromMouse(rgbframe);
+		}
+
 		depthframe = matEncoder.threeChannels8bitsTo1Channel16Bits(depthframe);
 
 		unsigned __int8* rgbData = (unsigned __int8*) rgbframe.data;
@@ -30,6 +34,7 @@ void AnalyzePipeline::analyze() {
 		}
 
 		Mat result(480, 640, CV_16UC4, resultData);
+		multiply(result, rs.getMask(), result);
 		cout << "frame: " << frameNumber << endl;
 		frameNumber++;
 		bcgRGB.setOriginal(rgbframe);
