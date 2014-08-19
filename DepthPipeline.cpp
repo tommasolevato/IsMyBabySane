@@ -5,12 +5,13 @@ Size DepthPipeline::getSize() {
 }
 
 int DepthPipeline::getFormatToEncodeTo() {
-	//return -1;
+	return -1;
 	//return CV_FOURCC('M', 'P', 'G', '4');
 	//return CV_FOURCC('X', 'V', 'I', 'D');
 	//return CV_FOURCC('H', '2', '6', '4');
 	//return CV_FOURCC('D', 'I', 'V', '3');
-	return CV_FOURCC('D', 'I', 'V', 'X');
+	//return CV_FOURCC('D', 'I', 'V', 'X');
+	//return CV_FOURCC('M', 'P', 'E', 'G');
 }
 
 string DepthPipeline::getName() {

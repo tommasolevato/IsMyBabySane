@@ -49,7 +49,7 @@ void RegionSelecter::setMaskFromMouse(Mat frame){
 	//TODO: hardcoded
 	//TODO: non sono sicuro ma sembra funzionare
 	Mat result = Mat::zeros(480,640,CV_16UC4);
-	fillPoly( result, pts, npt, 1, 1, 8 );
+	fillPoly( result, pts, npt, 1, Scalar(1,1,1,1), 8 );
 	//cv::moveWindow("Mask",0,0);
 	mask=result;
 
@@ -118,8 +118,8 @@ void RegionSelecter::reset(){
 //Funzione di utilità, per non stare a risettare la regione ad ogni run
 void RegionSelecter::setMaskFromFile(){
 	//TODO: ci vorrebbe un controllino sulla validità delle immagini caricate
-	cvtColor(imread("RGBMask.jpg"),mask,CV_RGB2GRAY);
-	cvtColor(imread("DepthMask.jpg"),depthMask,CV_RGB2GRAY);
+	//cvtColor(imread("RGBMask.jpg"),mask,CV_RGB2GRAY);
+	//cvtColor(imread("DepthMask.jpg"),depthMask,CV_RGB2GRAY);
 }
 
 Mat RegionSelecter::getMask(){

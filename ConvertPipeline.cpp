@@ -49,6 +49,7 @@ Mat ConvertPipeline::convertToMat(PXCImage* image) {
 	computeImage();
 	//FIXME: dimensioni hardcoded
 	Mat rawMat(480, 640, getSourceFormat(), frame);
+	//TODO: forse si può evitare questo Template Method
 	Mat toReturn = elaborateRawMat(rawMat);
 	return toReturn;
 }

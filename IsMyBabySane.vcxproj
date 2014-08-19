@@ -59,7 +59,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalOptions>/D WIN64 /D _WIN64_WINNT=0x0600 /D _UNICODE /D UNICODE %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>C:\opencv\build\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\opencv\build\include;C:\Program Files %28x86%29\Intel\PCSDK\sample\capture_viewer\src\Viewers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -70,11 +70,41 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AnalyzePipeline.cpp" />
+    <ClCompile Include="BackgroundCV.cpp" />
+    <ClCompile Include="CommandLineArgumentParser.cpp" />
+    <ClCompile Include="Converter.cpp" />
+    <ClCompile Include="ConvertPipeline.cpp" />
+    <ClCompile Include="DepthPipeline.cpp" />
+    <ClCompile Include="DepthPlayer.cpp" />
+    <ClCompile Include="IRPipeline.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MyPipeline.cpp" />
+    <ClCompile Include="MatEncoder.cpp" />
+    <ClCompile Include="OpticalFlow.cpp" />
+    <ClCompile Include="RegionSelecter.cpp" />
+    <ClCompile Include="RGBPlayer.cpp" />
+    <ClCompile Include="Session.cpp" />
+    <ClCompile Include="RGBPipeline.cpp" />
+    <ClCompile Include="Util.cpp" />
+    <ClCompile Include="VideoPlayer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MyPipeline.h" />
+    <ClInclude Include="AnalyzePipeline.h" />
+    <ClInclude Include="BackgroundCV.h" />
+    <ClInclude Include="CommandLineArgumentParser.h" />
+    <ClInclude Include="Converter.h" />
+    <ClInclude Include="ConvertPipeline.h" />
+    <ClInclude Include="DepthPlayer.h" />
+    <ClInclude Include="MatEncoder.h" />
+    <ClInclude Include="DepthPipeline.h" />
+    <ClInclude Include="IRPipeline.h" />
+    <ClInclude Include="OpticalFlow.h" />
+    <ClInclude Include="RegionSelecter.h" />
+    <ClInclude Include="RGBPipeline.h" />
+    <ClInclude Include="RGBPlayer.h" />
+    <ClInclude Include="Session.h" />
+    <ClInclude Include="Util.h" />
+    <ClInclude Include="VideoPlayer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
