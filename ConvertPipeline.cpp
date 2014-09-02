@@ -20,6 +20,7 @@ void ConvertPipeline::OnImage(PXCImage* image) {
 	if(isValidImage(image)){
 		Mat toWrite = convertToMat(image);
 		writer.write(toWrite);
+		//TODO: far vedere l'immagine di depth originale e non quella a verde e blu
 		imshow("Converting", toWrite);
 		waitKey(30);
 		image->ReleaseAccess(&data);

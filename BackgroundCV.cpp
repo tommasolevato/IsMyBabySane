@@ -12,7 +12,7 @@ Mat BackgroundCV::findBackground(string name, Mat image) {
 	Mat foreground;
 	sb(image, foreground, 0.08);
 	//imshow(name, image);
-	int size = 2;
+	int size = 1;
 	Mat element = getStructuringElement(cv::MORPH_ELLIPSE,
 		cv::Size(2 * size + 1, 2 * size + 1),
 		cv::Point(size, size) );

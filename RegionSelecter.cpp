@@ -27,10 +27,8 @@ void RegionSelecter::CallBackFunc(int event, int x, int y, int flags, void* ptr)
 void RegionSelecter::setMaskFromMouse(Mat frame){
 	frame.copyTo(temp);
 	frame.copyTo(originalFrame);
-
 	namedWindow("Select", 1);
 	printInstruction();
-
 	Point p;
 	setMouseCallback("Select", CallBackFunc,(&p));
 	imshow("Select",temp);
@@ -38,25 +36,31 @@ void RegionSelecter::setMaskFromMouse(Mat frame){
 	while(waitKey(0) != 13) {}
 
 	destroyAllWindows();
-	//}
 	points[0]=new Point[vect.size()];
-	std::copy(vect.begin(),vect.end(),points[0]);
+	
 	const Point* pts[1]={const_cast<Point*>(points[0])};
-
 	int npt[] = {(int)vect.size()};
 	npoints=npt;
 
 	//TODO: hardcoded
 	//TODO: non sono sicuro ma sembra funzionare
-	Mat result = Mat::zeros(480,640,CV_16UC4);
-	fillPoly( result, pts, npt, 1, Scalar(1,1,1,1), 8 );
+	Mat result = Mat::zeros(480,640,CV_16UC4);;
+	if(npoints[0] != 0) {
+		std::copy(vect.begin(),vect.end(),points[0]);
+		fillPoly( result, pts, npt, 1, Scalar(1,1,1,1), 8 );
+	} else {
+		vect.clear();
+		vect.push_back(Point(0,0));
+		vect.push_back(Point(640,0));
+		vect.push_back(Point(640, 480));
+		vect.push_back(Point(0, 480));
+		std::copy(vect.begin(),vect.end(),points[0]);
+		int numberOfPoints = 4;
+		fillPoly( result, pts, &numberOfPoints, 1, Scalar(1,1,1,1), 8 );
+	}
+
 	//cv::moveWindow("Mask",0,0);
 	mask=result;
-
-	//subtract(frame,frame,frame,mask);
-	//imshow("Focus Region",frame);
-	//cv::moveWindow("Focus Region",650,0);
-	//waitKey(30);
 
 	setDepthMask();
 
