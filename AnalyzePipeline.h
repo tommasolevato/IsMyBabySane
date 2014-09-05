@@ -5,13 +5,19 @@
 #include "BackgroundCV.h"
 #include "Util.h"
 #include "MatEncoder.h"
+#include "ElaboratedDepthPlayer.h"
 
 using namespace cv;
 using namespace std;
 
 class AnalyzePipeline {
 public: 
-	AnalyzePipeline(string rgbFile, string depthFile) : rgbplayer(rgbFile), depthplayer(depthFile), frameIstance(0) {}
+	//TODO: che diavolo è quel frameIstance?!
+	AnalyzePipeline(string rgbFile, string depthFile) : rgbPlayer(rgbFile), depthPlayer(depthFile), frameIstance(0) {
+		//TODO: farlo configurabile
+		//TODO: cambiare nome
+		bufferMaxSizeParameter = 20;
+	}
 	void analyze();
 
 
@@ -19,9 +25,19 @@ public:
 private:
 	BackgroundCV bcgRGB;
 	BackgroundCV bcgDepth;
-	VideoCapture rgbplayer;
-	VideoCapture depthplayer;
+	VideoCapture rgbPlayer;
+	//VideoCapture depthplayer;
+	ElaboratedDepthPlayer depthPlayer;
 	int frameIstance;
 	RegionSelecter rs;
 	MatEncoder matEncoder;
+	int bufferMaxSizeParameter;
+
+	list<Mat> buffer;
+
+
+	void updateBuffer(Mat toInsertIntoBuffer);
+	void adjustMatWithBuffer(Mat toAdjust);
+	unsigned __int16 checkAndAdjustIfIsReasonablyNotBlack(int x, int y);
+	unsigned __int16 adjustPixelWithBuffer(unsigned __int16 pixelValue, int x, int y);
 };

@@ -27,6 +27,8 @@ void VideoPlayer::playAndSaveFrames() {
 			break;
 		}
 		//TODO: usare il filename del video (splittato togliendo l'estensione e aggiungendo frameNumber e png)
-		imwrite("C:/Users/Tommaso/Desktop/frames/" + to_string(frameNumber) + ".png", frame);
+
+		//TODO: investigare
+		//imwrite("C:/Users/Tommaso/Desktop/frames/" + to_string(frameNumber) + ".png", frame);
 	}
 }

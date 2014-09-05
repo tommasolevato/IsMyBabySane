@@ -17,6 +17,7 @@ Mat BackgroundCV::findBackground(string name, Mat image) {
 		cv::Size(2 * size + 1, 2 * size + 1),
 		cv::Point(size, size) );
 	morphologyEx(foreground, foreground, CV_MOP_OPEN, element);
+	//medianBlur(foreground, foreground, 3);
 	imshow(name + " foreground", foreground);
 	//cvMoveWindow("foreground", 260, 520);
 	//cvMoveWindow("frame", 600, 10);

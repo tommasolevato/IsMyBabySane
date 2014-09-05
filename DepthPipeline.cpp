@@ -6,9 +6,7 @@ Size DepthPipeline::getSize() {
 
 int DepthPipeline::getFormatToEncodeTo() {
 	//return -1;
-	//return CV_FOURCC('M', 'P', 'G', '4');
 	//return CV_FOURCC('X', 'V', 'I', 'D');
-	//return CV_FOURCC('H', '2', '6', '4');
 	//return CV_FOURCC('D', 'I', 'V', '3');
 	//return CV_FOURCC('D', 'I', 'V', 'X');
 	//return CV_FOURCC('M', 'P', 'E', 'G');
@@ -31,7 +29,8 @@ void DepthPipeline::computeImage() {
 	initializeFrame();
 	//TODO: forse è il caso di spostare in un metodino a parte
 	Mat raw(240, 320, getSourceFormat(), temp);
-	medianBlur(raw, raw, 3);
+	//TODO: decommentare
+	//medianBlur(raw, raw, 3);
 	upscaleFrame();
 }
 
@@ -86,12 +85,13 @@ float DepthPipeline::correctPixelValue(float pixelValue) {
 
 Mat DepthPipeline::elaborateRawMat(Mat toElaborate) {
 	toElaborate = matEncoder.oneChannel16bitsTo3Channels8bits(toElaborate);
-	int size = 1;
+	//TODO: decommentare
+	/*int size = 1;
 	Mat element = getStructuringElement(cv::MORPH_RECT,
 		cv::Size(2 * size + 1, 2 * size + 1),
 		cv::Point(size, size) );
 
 	dilate(toElaborate, toElaborate, element);
-	medianBlur(toElaborate, toElaborate, 3);
+	medianBlur(toElaborate, toElaborate, 3);*/
 	return toElaborate;
 }

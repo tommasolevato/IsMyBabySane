@@ -5,6 +5,7 @@
 #include "RGBPlayer.h"
 #include "DepthPlayer.h"
 #include "CommandLineArgumentParser.h"
+#include "ElaboratedDepthPlayer.h"
 
 using namespace std;
 
@@ -32,13 +33,14 @@ int main(int argc, char* argv[]) {
 		if(parser.cmdOptionExists("-p")) {
 			string rgbFile   = parser.getCmdOption("-p");
 			RGBPlayer p(rgbFile);
-			p.play();
+			p.playAndSaveFrames();
 			exit(0);
 		}
 
 		if(parser.cmdOptionExists("-pd")) {
 			string depthFile   = parser.getCmdOption("-pd");
-			DepthPlayer p(depthFile);
+			//TODO: cambiare (forse)
+			ElaboratedDepthPlayer p(depthFile);
 			p.play();
 			exit(0);
 		}
@@ -53,4 +55,6 @@ int main(int argc, char* argv[]) {
 
 
 // -c C:/Users/Tommaso/Desktop/AIV/testCreative      -rgb C:/Users/Tommaso/Desktop/AIV/testCreative_RGB.avi      -d C:/Users/Tommaso/Desktop/AIV/testCreative_Depth.avi
-// -c "E:/Acquisizioni Meyer/Registrazione3_incubatrice"      -rgb "E:/Acquisizioni Meyer/Registrazione3_incubatrice_RGB.avi"      -d "E:/Acquisizioni Meyer/Registrazione3_incubatrice_Depth.avi"
+// -c "E:/Acquisizioni Meyer/Registrazione3_incubatrice"      -rgb "E:/Acquisizioni Meyer/Registrazione3_incubatrice_RGB.avi"      -d "E:/Acquisizioni Meyer/Registrazione3_incubatrice_Depth_lags.avi"
+// -pd "E:/Acquisizioni Meyer/Registrazione3_incubatrice_Depth_lags.avi"
+// -pd "E:/Acquisizioni Meyer/Registrazione3_incubatrice_Depth.avi"
