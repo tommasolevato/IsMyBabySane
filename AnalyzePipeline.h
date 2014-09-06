@@ -16,7 +16,7 @@ public:
 	AnalyzePipeline(string rgbFile, string depthFile) : rgbPlayer(rgbFile), depthPlayer(depthFile), frameIstance(0) {
 		//TODO: farlo configurabile
 		//TODO: cambiare nome
-		bufferMaxSizeParameter = 20;
+		bufferMaxSizeParameter = 8;
 	}
 	void analyze();
 
@@ -26,7 +26,7 @@ private:
 	BackgroundCV bcgRGB;
 	BackgroundCV bcgDepth;
 	VideoCapture rgbPlayer;
-	//VideoCapture depthplayer;
+	//VideoCapture depthPlayer;
 	ElaboratedDepthPlayer depthPlayer;
 	int frameIstance;
 	RegionSelecter rs;
@@ -40,4 +40,5 @@ private:
 	void adjustMatWithBuffer(Mat toAdjust);
 	unsigned __int16 checkAndAdjustIfIsReasonablyNotBlack(int x, int y);
 	unsigned __int16 adjustPixelWithBuffer(unsigned __int16 pixelValue, int x, int y);
+	Mat copyDepthMat(Mat toCopy);
 };

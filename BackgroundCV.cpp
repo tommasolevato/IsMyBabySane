@@ -1,7 +1,8 @@
 #include "BackgroundCV.h"
-
+using namespace std;
 BackgroundCV::BackgroundCV() {
 	sb = BackgroundSubtractorMOG2(10, 0, false);
+	frameNumber = 0;
 }
 
 void BackgroundCV::setOriginal(Mat or) {
@@ -19,9 +20,12 @@ Mat BackgroundCV::findBackground(string name, Mat image) {
 	morphologyEx(foreground, foreground, CV_MOP_OPEN, element);
 	//medianBlur(foreground, foreground, 3);
 	imshow(name + " foreground", foreground);
+	//TODO: eliminare
+	imwrite("C:/Users/Tommaso/Desktop/background/" + to_string(frameNumber) + ".png", foreground);
 	//cvMoveWindow("foreground", 260, 520);
 	//cvMoveWindow("frame", 600, 10);
 	waitKey(30);
+	frameNumber++;
 	return foreground;
 }
 

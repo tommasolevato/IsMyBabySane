@@ -6,6 +6,8 @@
 
 using namespace cv;
 
+//TODO: eliminare frameNumber
+
 class BackgroundCV {
 public:
 	BackgroundCV();
@@ -16,6 +18,7 @@ public:
 
 
 private:
+	int frameNumber;
 	BackgroundSubtractorMOG2 sb;
 	Mat original;
 };
