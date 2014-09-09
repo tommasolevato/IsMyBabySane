@@ -1,4 +1,5 @@
 #include "VideoPlayer.h"
+#include "MatDeleter.h"
 
 #include <iostream>
 
@@ -7,19 +8,21 @@ using namespace std;
 
 void VideoPlayer::play() {
 	frameNumber = 0;
-	if ( !cap.isOpened() )  // if not success, exit program
+	if ( !player.isOpened() )
 		cout << "Cannot open the video file" << endl;
 
 	for(;;) {
 		if(!playFrame()) {	
 			break;
 		}
+		MatDeleter::deleteMat(frame);
 	}
 }
 
 void VideoPlayer::playAndSaveFrames() {
+	//TODO: non funziona
 	frameNumber = 0;
-	if ( !cap.isOpened() )  // if not success, exit program
+	if ( !player.isOpened() )
 		cout << "Cannot open the video file" << endl;
 
 	for(;;) {

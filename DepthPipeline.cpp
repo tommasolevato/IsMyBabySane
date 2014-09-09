@@ -1,4 +1,5 @@
 #include "DepthPipeline.h"
+#include "MatDeleter.h"
 
 Size DepthPipeline::getSize() {
 	return Size(640, 480);
@@ -94,4 +95,9 @@ Mat DepthPipeline::elaborateRawMat(Mat toElaborate) {
 	dilate(toElaborate, toElaborate, element);
 	medianBlur(toElaborate, toElaborate, 3);*/
 	return toElaborate;
+}
+
+void DepthPipeline::cleanUp(PXCImage* originalImage, Mat finalImage) {
+	originalImage->ReleaseAccess(&data);
+	MatDeleter::deleteMat(finalImage);
 }

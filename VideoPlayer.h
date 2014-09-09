@@ -10,7 +10,7 @@ using namespace std;
 //TODO: distruttore virtuale
 class VideoPlayer {
 public:
-	VideoPlayer(string filename) : cap(filename) {
+	VideoPlayer(string filename) : player(filename) {
 		//TODO: ripulire
 		this->filename = filename;
 		frameNumber = 0;
@@ -23,7 +23,7 @@ public:
 
 protected:
 	virtual bool playFrame() = 0;
-	VideoCapture cap;
+	VideoCapture player;
 	string filename;
 	Mat frame;
 	int frameNumber;

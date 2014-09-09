@@ -77,8 +77,10 @@
     <ClCompile Include="ConvertPipeline.cpp" />
     <ClCompile Include="DepthPipeline.cpp" />
     <ClCompile Include="DepthPlayer.cpp" />
+    <ClCompile Include="ElaboratedDepthPlayer.cpp" />
     <ClCompile Include="IRPipeline.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MatDeleter.cpp" />
     <ClCompile Include="MatEncoder.cpp" />
     <ClCompile Include="OpticalFlow.cpp" />
     <ClCompile Include="RegionSelecter.cpp" />
@@ -95,6 +97,8 @@
     <ClInclude Include="Converter.h" />
     <ClInclude Include="ConvertPipeline.h" />
     <ClInclude Include="DepthPlayer.h" />
+    <ClInclude Include="ElaboratedDepthPlayer.h" />
+    <ClInclude Include="MatDeleter.h" />
     <ClInclude Include="MatEncoder.h" />
     <ClInclude Include="DepthPipeline.h" />
     <ClInclude Include="IRPipeline.h" />

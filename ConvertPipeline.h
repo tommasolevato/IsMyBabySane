@@ -39,7 +39,7 @@ protected:
 	int frameNumber;
 	virtual void computeImage() = 0;
 	virtual Mat elaborateRawMat(Mat toElaborate) = 0;
-
+	virtual void cleanUp(PXCImage* originalImage, Mat finalImage);
 
 
 private:

@@ -7,7 +7,6 @@
 using namespace cv;
 
 //TODO: eliminare frameNumber
-
 class BackgroundCV {
 public:
 	BackgroundCV();

@@ -1,5 +1,7 @@
 #include "BackgroundCV.h"
+
 using namespace std;
+
 BackgroundCV::BackgroundCV() {
 	sb = BackgroundSubtractorMOG2(10, 0, false);
 	frameNumber = 0;

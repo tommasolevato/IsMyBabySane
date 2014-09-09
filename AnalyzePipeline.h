@@ -47,4 +47,5 @@ private:
 	unsigned __int16 checkAndAdjustIfIsReasonablyNotBlack(int x, int y);
 	unsigned __int16 adjustPixelWithBuffer(unsigned __int16 pixelValue, int x, int y);
 	Mat copyDepthMat(Mat toCopy);
+	void averageMatWithBuffer(Mat toAverage);
 };

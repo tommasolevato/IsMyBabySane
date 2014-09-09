@@ -2,7 +2,7 @@
 
 bool DepthPlayer::playFrame() {
 	//TODO: eliminare copia incolla con metodo precedente
-	bool success = cap.read(frame);
+	bool success = player.read(frame);
 	if(success) {
 		Mat toShow = matEncoder.threeChannels8bitsTo1Channel16Bits(frame);
 		//TODO: forse questo smoothing è da togliere

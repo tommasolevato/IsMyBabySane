@@ -30,4 +30,5 @@ private:
 	int computeUpscaledIndex(int j);
 	void initializeFrame();
 	void upscaleFrame();
+	void cleanUp(PXCImage* originalImage, Mat finalImage);
 };

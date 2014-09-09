@@ -1,6 +1,7 @@
 #include "ConvertPipeline.h"
 #include <pxcimage.h>
 #include <iostream>
+#include "MatDeleter.h"
 #include <opencv2\core\core.hpp>
 #include <opencv2\opencv.hpp>
 #include "Util.h"
@@ -23,7 +24,7 @@ void ConvertPipeline::OnImage(PXCImage* image) {
 		//TODO: far vedere l'immagine di depth originale e non quella a verde e blu
 		imshow("Converting", toWrite);
 		waitKey(30);
-		image->ReleaseAccess(&data);
+		cleanUp(image, toWrite);
 	}
 	frameNumber++;
 }
@@ -41,6 +42,7 @@ void ConvertPipeline::convert() {
 	finalize();
 }
 
+//TODO: cambiare nome
 bool ConvertPipeline::isValidImage(PXCImage* image) {
 	return (image->AcquireAccess(PXCImage::ACCESS_READ, &data)>=PXC_STATUS_NO_ERROR);
 }
@@ -56,4 +58,6 @@ Mat ConvertPipeline::convertToMat(PXCImage* image) {
 }
 
 
-
+void ConvertPipeline::cleanUp(PXCImage* originalImage, Mat finalImage) {
+	originalImage->ReleaseAccess(&data);
+}

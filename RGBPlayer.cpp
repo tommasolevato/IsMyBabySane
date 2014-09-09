@@ -1,7 +1,7 @@
 #include "RGBPlayer.h"
 
 bool RGBPlayer::playFrame() {
-	bool success = cap.read(frame);
+	bool success = player.read(frame);
 	if(success) {
 		imshow("", frame);
 		waitKey(30);
