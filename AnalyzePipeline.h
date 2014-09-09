@@ -16,9 +16,13 @@ public:
 	AnalyzePipeline(string rgbFile, string depthFile) : rgbPlayer(rgbFile), depthPlayer(depthFile), frameIstance(0) {
 		//TODO: farlo configurabile
 		//TODO: cambiare nome
-		bufferMaxSizeParameter = 8;
+		numberOfFramesForSmoothing = 5;
+		//TODO: cambiare nome
+		numberOfFramesForFalseBlackElimination = 10;
 	}
 	void analyze();
+	void setNumberOfFramesForSmoothing(int number);
+	void setNumberOfFramesForFalseBlackElimination(int number);
 
 
 
@@ -31,11 +35,13 @@ private:
 	int frameIstance;
 	RegionSelecter rs;
 	MatEncoder matEncoder;
-	int bufferMaxSizeParameter;
+	int numberOfFramesForSmoothing;
+	int numberOfFramesForFalseBlackElimination;
 
 	list<Mat> buffer;
 
 
+	void eliminateFalseBlacks(Mat toAdjust);
 	void updateBuffer(Mat toInsertIntoBuffer);
 	void adjustMatWithBuffer(Mat toAdjust);
 	unsigned __int16 checkAndAdjustIfIsReasonablyNotBlack(int x, int y);

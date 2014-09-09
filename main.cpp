@@ -12,42 +12,6 @@ using namespace std;
 
 int main(int argc, char* argv[]) {
 
-	//VideoCapture player("E:/Acquisizioni Meyer/Registrazione3_incubatrice_Depth.avi");
-	//Mat frame(480, 640, CV_8UC3);
-	//player.read(frame);
-	//MatEncoder encoder;
-	////frame = encoder.threeChannels8bitsTo1Channel16Bits(frame);
-
-	//VideoWriter writer;
-	//writer.open("C:/Users/Tommaso/Desktop/pippo.avi", CV_FOURCC('X', 'V', 'I', 'D'), 30, Size(640, 480), true);
-
-	//for(int i=0; i<500; i++) {
-	//	writer.write(frame);
-	//	imshow("Converting", frame);
-	//	waitKey(30);
-	//}
-
-	//writer.release();
-
-	//TODO: rimuovere
-	/*list<int> lista;
-	
-	for(int i = 0; i < 10; i++) {
-		lista.push_back(i);
-	}
-
-	for(list<int>::iterator it = lista.begin(); it!= lista.end(); it++) {
-		cout << *it << endl;
-	}
-
-	cout << endl;
-
-	for(list<int>::reverse_iterator it = lista.rbegin(); it!= lista.rend(); it++) {
-		cout << *it << endl;
-	}*/
-
-	//exit(0);
-
 	CommandLineArgumentParser parser(argv, argc);
 
 	try{
@@ -63,6 +27,15 @@ int main(int argc, char* argv[]) {
 			string depthFile = parser.getCmdOption("-d");
 
 			AnalyzePipeline analyzer(rgbFile, depthFile);
+
+			if(parser.cmdOptionExists("-ns")) {
+				analyzer.setNumberOfFramesForSmoothing(stoi(parser.getCmdOption("-ns")));
+			}
+
+			if(parser.cmdOptionExists("-nbe")) {
+				analyzer.setNumberOfFramesForFalseBlackElimination(stoi(parser.getCmdOption("-nbe")));
+			}
+
 			analyzer.analyze();
 			exit(0);
 		}

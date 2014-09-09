@@ -7,7 +7,7 @@ using namespace std;
 using namespace cv;
 
 void AnalyzePipeline::analyze() {
-	//FIXME: sto per rompere tutto
+	//TODO: dividere in più metodi
 	int frameNumber = 0;
 	for(;;) {
 		Mat rgbFrame;
@@ -23,7 +23,7 @@ void AnalyzePipeline::analyze() {
 		adjustMatWithBuffer(depthFrame);
 
 		//TODO: eliminare
-		//imwrite("C:/Users/Tommaso/Desktop/frames/" + to_string(frameNumber) + ".png", depthFrame);
+		imwrite("C:/Users/Tommaso/Desktop/frames/" + to_string(frameNumber) + ".png", depthFrame);
 
 		unsigned __int8* rgbData = (unsigned __int8*) rgbFrame.data;
 		unsigned __int16* depthData = (unsigned __int16*) depthFrame.data;
@@ -63,7 +63,9 @@ Mat AnalyzePipeline::copyDepthMat(Mat toCopy) {
 
 
 void AnalyzePipeline::adjustMatWithBuffer(Mat toAdjust) {
+
 	Mat copy = copyDepthMat(toAdjust);
+	eliminateFalseBlacks(copy);
 	for(int x = 0; x < copy.cols; x++) {
 		for(int y = 0; y < copy.rows; y++) {
 			unsigned __int16 pixelValue = copy.at<unsigned __int16>(Point(x, y));
@@ -75,25 +77,34 @@ void AnalyzePipeline::adjustMatWithBuffer(Mat toAdjust) {
 	updateBuffer(copy);
 }
 
-unsigned __int16 AnalyzePipeline::adjustPixelWithBuffer(unsigned __int16 pixelValue, int x, int y) {
-	if(pixelValue != 0) {
-		int sum = 0;
-		for(std::list<Mat>::iterator it=buffer.begin(); it != buffer.end(); it++) {
-			sum += (it->at<unsigned __int16>(Point(x, y)));
+void AnalyzePipeline::eliminateFalseBlacks(Mat toAdjust) {
+	for(int x = 0; x < toAdjust.cols; x++) {
+		for(int y = 0; y < toAdjust.rows; y++) {
+			if(toAdjust.at<unsigned __int16>(Point(x, y)) == 0)
+				toAdjust.at<unsigned __int16>(Point(x, y)) = checkAndAdjustIfIsReasonablyNotBlack(x, y);
 		}
-		sum += pixelValue;
-		unsigned __int16 reasonablePixelValue = (unsigned __int16) (sum / (buffer.size() + 1));
-		//TODO: assicurarsi che non ci siano errori aritmetici
-		return (unsigned __int16) reasonablePixelValue;
-		//return pixelValue;
 	}
+
+}
+
+unsigned __int16 AnalyzePipeline::adjustPixelWithBuffer(unsigned __int16 pixelValue, int x, int y) {
+	//if(pixelValue != 0) {
+	int sum = 0;
+	int count = 0;
+	for(std::list<Mat>::iterator it=buffer.begin(); it != buffer.end() && count < numberOfFramesForSmoothing; it++) {
+		sum += (it->at<unsigned __int16>(Point(x, y)));
+		count++;
+	}
+	sum += pixelValue;
+	unsigned __int16 reasonablePixelValue = (unsigned __int16) (sum / (std::min<int>(buffer.size(), numberOfFramesForSmoothing) + 1));
+	return (unsigned __int16) reasonablePixelValue;
+	//}
 	//TODO: ripulire
-	return pixelValue;
-	return checkAndAdjustIfIsReasonablyNotBlack(x,y);
+	//return checkAndAdjustIfIsReasonablyNotBlack(x,y);
 }
 
 void AnalyzePipeline::updateBuffer(Mat toInsertIntoBuffer) {
-	if(buffer.size() == bufferMaxSizeParameter) {
+	if(buffer.size() == std::max<int>(numberOfFramesForFalseBlackElimination, numberOfFramesForSmoothing)) {
 		Mat toDelete = buffer.front();
 		delete toDelete.data;
 		buffer.pop_front();
@@ -102,10 +113,20 @@ void AnalyzePipeline::updateBuffer(Mat toInsertIntoBuffer) {
 }
 
 unsigned __int16 AnalyzePipeline::checkAndAdjustIfIsReasonablyNotBlack(int x, int y) {
-	for(std::list<Mat>::reverse_iterator it=buffer.rbegin(); it != buffer.rend(); it++) {
+	int count=0;
+	for(std::list<Mat>::reverse_iterator it=buffer.rbegin(); it != buffer.rend() && count < numberOfFramesForFalseBlackElimination; it++) {
 		if(it->at<unsigned __int16>(Point(x, y)) != 0) {
 			return it->at<unsigned __int16>(Point(x, y));
 		}
+		count++;
 	}
 	return 0;
+}
+
+void AnalyzePipeline::setNumberOfFramesForFalseBlackElimination(int number) {
+	numberOfFramesForFalseBlackElimination = number; 
+}
+
+void AnalyzePipeline::setNumberOfFramesForSmoothing(int number) {
+	numberOfFramesForSmoothing = number;
 }
