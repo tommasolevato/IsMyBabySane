@@ -13,12 +13,8 @@ using namespace std;
 
 class AnalyzePipeline {
 public: 
-	//TODO: che diavolo è quel frameIstance?!
 	AnalyzePipeline(string rgbFile, string depthFile) : rgbPlayer(rgbFile), depthPlayer(depthFile), frameIstance(0) {
-		//TODO: farlo configurabile
-		//TODO: cambiare nome
 		numberOfFramesForSmoothing = 5;
-		//TODO: cambiare nome
 		numberOfFramesForFalseBlackElimination = 10;
 	}
 	void analyze();
@@ -30,7 +26,6 @@ public:
 private:
 	BackgroundCV bcg;
 	RGBPlayer rgbPlayer;
-	//VideoCapture depthPlayer;
 	ElaboratedDepthPlayer depthPlayer;
 	int frameIstance;
 	RegionSelecter rs;

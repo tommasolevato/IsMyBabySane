@@ -6,13 +6,10 @@
 
 using namespace cv;
 
-//TODO: eliminare frameNumber
 class BackgroundCV {
 public:
 	BackgroundCV();
 	Mat findBackground(string name, Mat image);
-	//TODO: eliminare
-	void setOriginal(Mat or);
 
 
 

@@ -35,7 +35,6 @@ Mat MatEncoder::threeChannels8bitsTo1Channel16Bits(Mat toEncode) {
 	return Mat(toEncode.rows, toEncode.cols, CV_16UC1, frame16Bits);
 }
 
-//TODO: eliminare
 MatEncoder::~MatEncoder() {
 
 }

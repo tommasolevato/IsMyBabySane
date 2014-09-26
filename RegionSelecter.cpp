@@ -42,8 +42,6 @@ void RegionSelecter::setMaskFromMouse(Mat frame){
 	int npt[] = {(int)vect.size()};
 	npoints=npt;
 
-	//TODO: hardcoded
-	//TODO: non sono sicuro ma sembra funzionare
 	Mat result = Mat::zeros(480,640,CV_16UC4);;
 	if(npoints[0] != 0) {
 		std::copy(vect.begin(),vect.end(),points[0]);

@@ -4,7 +4,6 @@
 #include "RGBPipeline.h"
 #include "DepthPipeline.h"
 
-//TODO: polimorfismo
 class Converter {
 public:
 	Converter(const char* file) : RGBConverter(charPtrToWCharPtr(file)), DepthConverter(charPtrToWCharPtr(file)) {}

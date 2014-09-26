@@ -7,17 +7,14 @@
 using namespace cv;
 using namespace std;
 
-//TODO: distruttore virtuale
 class VideoPlayer {
 public:
 	VideoPlayer(string filename) : player(filename) {
-		//TODO: ripulire
 		this->filename = filename;
 		frameNumber = 0;
 	}
 	virtual ~VideoPlayer() {};	
 	void play();
-	void playAndSaveFrames();
 	virtual bool read(Mat& dst);
 
 

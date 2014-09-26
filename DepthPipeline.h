@@ -22,7 +22,6 @@ private:
 	const int maxPixelValue;
 	const double correctionFactor;
 	MatEncoder matEncoder;
-	//TODO: cambiare nome
 	unsigned __int16* temp;
 	Mat elaborateRawMat(Mat toElaborate);
 	void computeImage();

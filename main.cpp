@@ -41,7 +41,6 @@ int main(int argc, char* argv[]) {
 
 		if(parser.cmdOptionExists("-pd")) {
 			string depthFile   = parser.getCmdOption("-pd");
-			//TODO: cambiare (forse)
 			ElaboratedDepthPlayer p(depthFile);
 			p.play();
 			exit(0);
@@ -54,9 +53,3 @@ int main(int argc, char* argv[]) {
 		getchar();
 	}
 }
-
-
-// -c C:/Users/Tommaso/Desktop/AIV/testCreative      -rgb C:/Users/Tommaso/Desktop/AIV/testCreative_RGB.avi      -d C:/Users/Tommaso/Desktop/AIV/testCreative_Depth.avi
-// -c "E:/Acquisizioni Meyer/Registrazione3_incubatrice"      -rgb "E:/Acquisizioni Meyer/Registrazione3_incubatrice_RGB.avi"      -d "E:/Acquisizioni Meyer/Registrazione3_incubatrice_Depth_lags.avi"
-// -pd "E:/Acquisizioni Meyer/Registrazione3_incubatrice_Depth_lags.avi"
-// -pd "E:/Acquisizioni Meyer/Registrazione3_incubatrice_Depth.avi"

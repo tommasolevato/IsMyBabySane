@@ -7,7 +7,6 @@ using namespace std;
 using namespace cv;
 
 void AnalyzePipeline::analyze() {
-	//TODO: dividere in più metodi
 	int frameNumber = 0;
 	for(;;) {
 		Mat rgbFrame;
@@ -21,9 +20,6 @@ void AnalyzePipeline::analyze() {
 		}
 
 		adjustMatWithBuffer(depthFrame);
-
-		//TODO: eliminare
-		imwrite("C:/Users/Tommaso/Desktop/frames/" + to_string(frameNumber) + ".png", depthFrame);
 
 		unsigned __int8* rgbData = (unsigned __int8*) rgbFrame.data;
 		unsigned __int16* depthData = (unsigned __int16*) depthFrame.data;
@@ -123,11 +119,6 @@ unsigned __int16 AnalyzePipeline::checkAndAdjustIfIsReasonablyNotBlack(int x, in
 		count++;
 	}
 	return 0;
-}
-
-//TODO: implemetare
-void AnalyzePipeline::averageMatWithBuffer(Mat toAverage) {
-
 }
 
 void AnalyzePipeline::setNumberOfFramesForFalseBlackElimination(int number) {

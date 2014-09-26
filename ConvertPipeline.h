@@ -34,7 +34,6 @@ public:
 protected:
 	PXCImage::ImageData data;
 	PXCImage::ImageInfo info;
-	//FIXME
 	pxcBYTE* frame;
 	int frameNumber;
 	virtual void computeImage() = 0;
@@ -44,7 +43,6 @@ protected:
 
 private:
 	VideoWriter writer;
-	//TODO: forse sarebbe il caso di aggirare questo const
 	const pxcCHAR* filename; 
 	virtual bool isValidImage(PXCImage* image);
 	Mat convertToMat(PXCImage* image);

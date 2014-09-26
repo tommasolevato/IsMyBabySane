@@ -28,9 +28,7 @@ PXCImage::ColorFormat DepthPipeline::getImageType(){
 
 void DepthPipeline::computeImage() {
 	initializeFrame();
-	//TODO: forse è il caso di spostare in un metodino a parte
 	Mat raw(240, 320, getSourceFormat(), temp);
-	//TODO: decommentare
 	//medianBlur(raw, raw, 3);
 	upscaleFrame();
 }
@@ -86,14 +84,6 @@ float DepthPipeline::correctPixelValue(float pixelValue) {
 
 Mat DepthPipeline::elaborateRawMat(Mat toElaborate) {
 	toElaborate = matEncoder.oneChannel16bitsTo3Channels8bits(toElaborate);
-	//TODO: decommentare
-	/*int size = 1;
-	Mat element = getStructuringElement(cv::MORPH_RECT,
-	cv::Size(2 * size + 1, 2 * size + 1),
-	cv::Point(size, size) );
-
-	dilate(toElaborate, toElaborate, element);
-	medianBlur(toElaborate, toElaborate, 3);*/
 	return toElaborate;
 }
 
