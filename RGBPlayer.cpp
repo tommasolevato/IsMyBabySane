@@ -9,3 +9,7 @@ bool RGBPlayer::playFrame() {
 	frameNumber++;
 	return success;
 }
+
+void RGBPlayer::elaborate(Mat& dst) {
+
+}

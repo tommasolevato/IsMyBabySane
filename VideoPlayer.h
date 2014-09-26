@@ -18,7 +18,7 @@ public:
 	virtual ~VideoPlayer() {};	
 	void play();
 	void playAndSaveFrames();
-
+	virtual bool read(Mat& dst);
 
 
 protected:
@@ -27,4 +27,5 @@ protected:
 	string filename;
 	Mat frame;
 	int frameNumber;
+	virtual void elaborate(Mat& dst) = 0;
 };

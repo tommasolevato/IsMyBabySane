@@ -11,4 +11,5 @@ public:
 
 private:
 	bool playFrame();
+	void elaborate(Mat& dst);
 };

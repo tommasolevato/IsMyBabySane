@@ -3,7 +3,6 @@
 #include <iostream>
 #include <string>
 #include "RGBPlayer.h"
-#include "DepthPlayer.h"
 #include "CommandLineArgumentParser.h"
 #include "ElaboratedDepthPlayer.h"
 #include "MatEncoder.h"
@@ -37,13 +36,6 @@ int main(int argc, char* argv[]) {
 			}
 
 			analyzer.analyze();
-			exit(0);
-		}
-
-		if(parser.cmdOptionExists("-p")) {
-			string rgbFile   = parser.getCmdOption("-p");
-			RGBPlayer p(rgbFile);
-			p.playAndSaveFrames();
 			exit(0);
 		}
 

@@ -42,8 +42,7 @@ void AnalyzePipeline::analyze() {
 		cout << "frame: " << frameNumber << "	 buffer: " << buffer.size() << endl;
 
 		frameNumber++;
-		bcgRGB.setOriginal(rgbFrame);
-		bcgRGB.findBackground("", result);
+		bcg.findBackground("", result);
 
 		delete resultData;
 	}
@@ -93,11 +92,14 @@ unsigned __int16 AnalyzePipeline::adjustPixelWithBuffer(unsigned __int16 pixelVa
 	std::list<Mat>::iterator it=buffer.begin();
 	while(it != buffer.end() && count < numberOfFramesForSmoothing)  {
 		sum += (it->at<unsigned __int16>(Point(x, y)));
+		if(it->at<unsigned __int16>(Point(x, y)) != 0)
+			count++;
 		it++;
-		count++;
 	}
 	sum += pixelValue;
-	int numberOfSummedElements = count + 1;
+	int numberOfSummedElements = count;
+	if(pixelValue != 0 || numberOfSummedElements == 0) 
+		numberOfSummedElements++;
 	unsigned __int16 reasonablePixelValue = (unsigned __int16) (sum / numberOfSummedElements);
 	return (unsigned __int16) reasonablePixelValue;
 }

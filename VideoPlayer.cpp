@@ -19,6 +19,14 @@ void VideoPlayer::play() {
 	}
 }
 
+bool VideoPlayer::read(Mat& dst) {
+	if(player.read(dst)) {
+		elaborate(dst);
+		return true;
+	}
+	return false;
+}
+
 void VideoPlayer::playAndSaveFrames() {
 	//TODO: non funziona
 	frameNumber = 0;

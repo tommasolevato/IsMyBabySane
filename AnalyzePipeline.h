@@ -6,6 +6,7 @@
 #include "Util.h"
 #include "MatEncoder.h"
 #include "ElaboratedDepthPlayer.h"
+#include "RGBPlayer.h"
 
 using namespace cv;
 using namespace std;
@@ -27,9 +28,8 @@ public:
 
 
 private:
-	BackgroundCV bcgRGB;
-	BackgroundCV bcgDepth;
-	VideoCapture rgbPlayer;
+	BackgroundCV bcg;
+	RGBPlayer rgbPlayer;
 	//VideoCapture depthPlayer;
 	ElaboratedDepthPlayer depthPlayer;
 	int frameIstance;

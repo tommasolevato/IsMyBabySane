@@ -23,7 +23,7 @@ int DepthPipeline::getSourceFormat() {
 }
 
 PXCImage::ColorFormat DepthPipeline::getImageType(){
-	return PXCImage::COLOR_FORMAT_DEPTH;
+	return PXCImage::COLOR_FORMAT_VERTICES;
 }
 
 void DepthPipeline::computeImage() {
@@ -89,8 +89,8 @@ Mat DepthPipeline::elaborateRawMat(Mat toElaborate) {
 	//TODO: decommentare
 	/*int size = 1;
 	Mat element = getStructuringElement(cv::MORPH_RECT,
-		cv::Size(2 * size + 1, 2 * size + 1),
-		cv::Point(size, size) );
+	cv::Size(2 * size + 1, 2 * size + 1),
+	cv::Point(size, size) );
 
 	dilate(toElaborate, toElaborate, element);
 	medianBlur(toElaborate, toElaborate, 3);*/
